@@ -1,0 +1,234 @@
+@import "tailwindcss";
+
+/* The Anant Dubey Issue: India Post sheet, stamp paper, postmark ink, inland letter. */
+@theme {
+	--color-post: #c8211b;
+	--color-post-deep: #9e1813;
+	--color-paper: #fbf9f4;
+	--color-paper-shade: #f1ece2;
+	--color-ink: #16120f;
+	--color-ink-soft: #3b342e;
+	--color-ink-mute: #5a514a;
+	--color-rule: #d9d2c6;
+	--color-ultra: #1f3fa8;
+	--color-emerald: #0b7a55;
+	--color-saffron: #a65200;
+	--color-plum: #6b2a6e;
+	--color-cancel: #2a2350;
+	--color-inland: #c9dcf0;
+	--color-inland-card: #dbe8f6;
+	--color-inland-ink: #14325c;
+
+	--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Faces are self-hosted by next/font; these resolve to its variables at use time. */
+@theme inline {
+	--font-display: var(--font-big-shoulders), "Arial Narrow", sans-serif;
+	--font-sans: var(--font-hanken), system-ui, sans-serif;
+	--font-mono: var(--font-jetbrains), ui-monospace, monospace;
+	--font-deva: var(--font-tiro-deva), serif;
+}
+
+@layer base {
+	html {
+		background: var(--color-paper);
+		color: var(--color-ink);
+		-webkit-text-size-adjust: 100%;
+		scrollbar-color: var(--color-ink-mute) var(--color-paper-shade);
+	}
+	body {
+		overflow-x: clip;
+		font-family: var(--font-sans);
+		font-size: 1.0625rem;
+		line-height: 1.6;
+		-webkit-font-smoothing: antialiased;
+	}
+	::selection {
+		background: var(--color-post);
+		color: var(--color-paper);
+	}
+	:focus-visible {
+		outline: 3px solid var(--color-ultra);
+		outline-offset: 3px;
+		border-radius: 2px;
+	}
+	a {
+		text-underline-offset: 0.2em;
+		text-decoration-thickness: 1.5px;
+	}
+	h1,
+	h2,
+	h3 {
+		text-wrap: balance;
+	}
+	p {
+		text-wrap: pretty;
+	}
+}
+
+/* Perforated stamp paper: holes punched along the four edges, filled with whatever the
+   stamp sits on (--hole). Works at any stamp size. */
+@utility perforated {
+	position: relative;
+	background: var(--color-paper);
+	&::before {
+		content: "";
+		position: absolute;
+		inset: -6px;
+		pointer-events: none;
+		background:
+			radial-gradient(circle, var(--hole, var(--color-post)) 5.5px, transparent 6px) top left / 18px 12px repeat-x,
+			radial-gradient(circle, var(--hole, var(--color-post)) 5.5px, transparent 6px) bottom left / 18px 12px repeat-x,
+			radial-gradient(circle, var(--hole, var(--color-post)) 5.5px, transparent 6px) top left / 12px 18px repeat-y,
+			radial-gradient(circle, var(--hole, var(--color-post)) 5.5px, transparent 6px) top right / 12px 18px repeat-y;
+	}
+}
+
+/* The postmark strike: the cancellation lands once, with a little ink spread. */
+@keyframes postmark-strike {
+	0% {
+		opacity: 0;
+		transform: rotate(-14deg) scale(1.35);
+		filter: blur(2px);
+	}
+	55% {
+		opacity: 0.92;
+		transform: rotate(-14deg) scale(0.96);
+		filter: blur(0);
+	}
+	100% {
+		opacity: 0.85;
+		transform: rotate(-14deg) scale(1);
+	}
+}
+@keyframes tap {
+	0%,
+	68%,
+	100% {
+		transform: scale(1);
+	}
+	76% {
+		transform: scale(0.9);
+	}
+}
+@keyframes rise {
+	0%,
+	68% {
+		transform: scaleY(0.42);
+	}
+	100% {
+		transform: scaleY(1);
+	}
+}
+@keyframes speak {
+	50% {
+		transform: scaleY(0.35);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+/* Long-form reading: writing, case studies, after-hours. */
+.prose-letter {
+	max-width: 68ch;
+	font-size: 1.125rem;
+	line-height: 1.7;
+	color: var(--color-ink-soft);
+}
+.prose-letter > * + * {
+	margin-top: 1.1em;
+}
+.prose-letter h1,
+.prose-letter h2 {
+	font-family: var(--font-display);
+	font-weight: 900;
+	text-transform: uppercase;
+	font-size: 2.4rem;
+	line-height: 0.95;
+	color: var(--color-ink);
+	margin-top: 2.2em;
+	margin-bottom: 0.4em;
+}
+.prose-letter h3 {
+	font-weight: 700;
+	font-size: 1.3rem;
+	color: var(--color-ink);
+	margin-top: 1.8em;
+}
+.prose-letter a {
+	color: var(--color-ultra);
+	text-decoration: underline;
+}
+.prose-letter strong {
+	color: var(--color-ink);
+}
+.prose-letter ul,
+.prose-letter ol {
+	padding-left: 1.3em;
+}
+.prose-letter ul {
+	list-style: square;
+}
+.prose-letter ol {
+	list-style: decimal;
+}
+.prose-letter li + li {
+	margin-top: 0.35em;
+}
+.prose-letter blockquote {
+	border-left: 1px solid var(--color-ink);
+	padding-left: 1.1em;
+	font-style: italic;
+}
+.prose-letter img {
+	border: 1px solid var(--color-rule);
+	max-width: 100%;
+	height: auto;
+}
+.prose-letter :not(pre) > code {
+	font-family: var(--font-mono);
+	font-size: 0.88em;
+	background: var(--color-paper-shade);
+	padding: 0.1em 0.35em;
+	border-radius: 3px;
+	color: var(--color-ink);
+}
+.prose-letter pre {
+	font-family: var(--font-mono);
+	font-size: 0.86rem;
+	line-height: 1.6;
+	padding: 1.1rem 1.2rem;
+	overflow-x: auto;
+	border: 1px solid var(--color-ink);
+	border-radius: 2px;
+}
+.prose-letter hr {
+	border: 0;
+	border-top: 1px solid var(--color-rule);
+}
+.prose-letter table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.95rem;
+}
+.prose-letter th,
+.prose-letter td {
+	border-bottom: 1px solid var(--color-rule);
+	padding: 0.5em 0.6em;
+	text-align: left;
+}
+.verse {
+	white-space: pre-line;
+	font-size: 1.25rem;
+	line-height: 1.8;
+}
