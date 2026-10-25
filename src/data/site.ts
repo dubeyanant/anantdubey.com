@@ -153,8 +153,8 @@ export const caseStudies: CaseStudy[] = [
 		denomination: "Won",
 		year: "2026",
 		role: "Builder and pitch, Ideathon 2026",
-		stack: ["Speech-to-text", "MCP tools", "Brokerage APIs", "Text-to-speech"],
-		summary: "A voice AI agent for broking apps. It won Ideathon 2026, judged by a 12-member jury.",
+		stack: ["Speech-to-text", "MCP tools", "Brokerage APIs", "Text-to-speech", "TypeScript"],
+		summary: "A voice AI agent for broking apps. It won Ideathon 2026, judged by a 12-member jury. You can try a rebuild of it live, and its MCP server is open source.",
 		sections: [
 			{
 				heading: "The idea",
