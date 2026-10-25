@@ -60,7 +60,11 @@ export async function POST(request: Request) {
 			state: body.state ?? null,
 			provider: limited ? "rules" : undefined,
 		});
+		// A failed model call is answered by the offline parser; log why, and tell the client it fell back.
+		if (turn.error) console.error("agent model call failed:", turn.error);
 		return Response.json({
+			fallback: Boolean(turn.error),
+			keyed: hasKey,
 			reply: turn.reply,
 			events: turn.events,
 			state: turn.state,
