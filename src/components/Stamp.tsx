@@ -13,7 +13,7 @@ export const inkClass: Record<Ink, string> = {
 /** Catalogue line printed along the top of every stamp: issue name and year. */
 function Catalogue({ issue, year }: { issue: string; year: string }) {
 	return (
-		<div className="flex items-baseline justify-between gap-3 font-mono text-[11px] leading-none tracking-[0.14em] uppercase tabular-nums">
+		<div className="flex items-baseline justify-between gap-3 catalogue">
 			<span>{issue}</span>
 			<span>{year}</span>
 		</div>

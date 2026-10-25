@@ -26,9 +26,9 @@
 /* Faces are self-hosted by next/font; these resolve to its variables at use time. */
 @theme inline {
 	--font-display: var(--font-big-shoulders), "Arial Narrow", sans-serif;
-	--font-sans: var(--font-hanken), system-ui, sans-serif;
-	--font-mono: var(--font-jetbrains), ui-monospace, monospace;
-	--font-deva: var(--font-tiro-deva), serif;
+	--font-sans: var(--font-anek), system-ui, sans-serif;
+	--font-mono: ui-monospace, "Cascadia Mono", Consolas, monospace; /* code blocks only */
+	--font-deva: var(--font-anek-deva), var(--font-anek), sans-serif;
 }
 
 @layer base {
@@ -68,6 +68,18 @@
 	}
 }
 
+/* Catalogue text: the condensed capitals stamps use for country, issue and value lines. */
+@utility catalogue {
+	font-family: var(--font-sans);
+	font-stretch: 75%;
+	font-weight: 600;
+	font-size: 0.75rem;
+	line-height: 1.3;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	font-variant-numeric: tabular-nums;
+}
+
 /* Perforated stamp paper: holes punched along the four edges, filled with whatever the
    stamp sits on (--hole). Works at any stamp size. */
 @utility perforated {
@@ -101,6 +113,84 @@
 	100% {
 		opacity: 0.85;
 		transform: rotate(-14deg) scale(1);
+	}
+}
+/* A stamp is printed onto the sheet: it settles from a slight lift and tilt. */
+@keyframes print-in {
+	0% {
+		opacity: 0;
+		transform: translateY(22px) rotate(1.6deg) scale(0.97);
+	}
+	100% {
+		opacity: 1;
+		transform: none;
+	}
+}
+/* Torn off the sheet: a short peel, then away up and to the right. */
+@keyframes tear-off {
+	0% {
+		transform: none;
+	}
+	28% {
+		transform: translateY(-14px) rotate(-3deg);
+		filter: drop-shadow(0 18px 18px rgba(22, 18, 15, 0.35));
+	}
+	100% {
+		transform: translate(14vw, -115vh) rotate(-26deg);
+		filter: drop-shadow(0 40px 30px rgba(22, 18, 15, 0.25));
+	}
+}
+/* Arriving in its mount on the case-study page. */
+@keyframes land {
+	0% {
+		opacity: 0;
+		transform: translate(-6vw, -40vh) rotate(-18deg);
+	}
+	70% {
+		opacity: 1;
+		transform: translateY(6px) rotate(1.5deg);
+	}
+	100% {
+		transform: none;
+	}
+}
+/* A cancellation line drawn through the old value. */
+@keyframes strike {
+	from {
+		transform: scaleX(0);
+	}
+	to {
+		transform: scaleX(1);
+	}
+}
+@keyframes pop-in {
+	0% {
+		opacity: 0;
+		transform: translateY(0.25em) scale(0.8);
+	}
+	100% {
+		opacity: 1;
+		transform: none;
+	}
+}
+/* The name sets first, one line after the other. */
+@keyframes name-in {
+	from {
+		opacity: 0;
+		transform: translateY(0.18em);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+/* The highlight in the claim is inked in from the left. */
+@keyframes ink-in {
+	from {
+		clip-path: inset(0 100% 0 0);
+	}
+	to {
+		clip-path: inset(0 0 0 0);
 	}
 }
 @keyframes tap {
@@ -232,4 +322,15 @@
 	white-space: pre-line;
 	font-size: 1.25rem;
 	line-height: 1.8;
+}
+
+/* Sections print in as they scroll into view, where the browser supports scroll timelines. */
+@media (prefers-reduced-motion: no-preference) {
+	@supports (animation-timeline: view()) {
+		.reveal {
+			animation: print-in linear both;
+			animation-timeline: view();
+			animation-range: entry 0% entry 70%;
+		}
+	}
 }

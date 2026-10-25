@@ -14,7 +14,7 @@ export default function OpengraphImage() {
 				<div style={{ display: "flex", flexDirection: "column" }}>
 					<div style={{ fontSize: 150, fontWeight: 900, lineHeight: 0.85, letterSpacing: -2 }}>ANANT</div>
 					<div style={{ fontSize: 150, fontWeight: 900, lineHeight: 0.85, letterSpacing: -2 }}>DUBEY</div>
-					<div style={{ fontSize: 34, marginTop: 28, lineHeight: 1.3 }}>Flutter engineer · ships mobile that moves money · builds AI agents</div>
+					<div style={{ fontSize: 34, marginTop: 28, lineHeight: 1.3 }}>Flutter engineer in Mumbai. Trading apps and AI agents.</div>
 				</div>
 				<div style={{ fontSize: 22, letterSpacing: 4, textTransform: "uppercase" }}>anantdubey.com</div>
 			</div>

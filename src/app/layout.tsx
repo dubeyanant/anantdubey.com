@@ -1,12 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Big_Shoulders, Hanken_Grotesk, JetBrains_Mono, Tiro_Devanagari_Hindi } from "next/font/google";
+import { Anek_Devanagari, Anek_Latin, Big_Shoulders } from "next/font/google";
 import { site } from "@/data/site";
 import "./globals.css";
 
 const bigShoulders = Big_Shoulders({ variable: "--font-big-shoulders", subsets: ["latin"], weight: ["700", "900"] });
-const hanken = Hanken_Grotesk({ variable: "--font-hanken", subsets: ["latin"], weight: ["400", "500", "600", "700"] });
-const jetbrains = JetBrains_Mono({ variable: "--font-jetbrains", subsets: ["latin"], weight: ["500"] });
-const tiroDeva = Tiro_Devanagari_Hindi({ variable: "--font-tiro-deva", subsets: ["devanagari"], weight: "400" });
+// Anek is drawn by Ek Type in Mumbai: one family for English and Hindi, with a width axis for catalogue text.
+const anek = Anek_Latin({ variable: "--font-anek", subsets: ["latin"], axes: ["wdth"] });
+const anekDeva = Anek_Devanagari({ variable: "--font-anek-deva", subsets: ["devanagari"], axes: ["wdth"] });
 
 export const metadata: Metadata = {
 	metadataBase: new URL(site.url),
@@ -22,7 +22,7 @@ export const viewport: Viewport = { themeColor: "#c8211b" };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
 	return (
-		<html lang="en" className={`${bigShoulders.variable} ${hanken.variable} ${jetbrains.variable} ${tiroDeva.variable}`}>
+		<html lang="en" className={`${bigShoulders.variable} ${anek.variable} ${anekDeva.variable}`}>
 			<body className="min-h-dvh bg-paper text-ink">
 				<a
 					href="#main"

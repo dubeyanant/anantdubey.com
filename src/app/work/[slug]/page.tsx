@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PaperHeader, PostBox } from "@/components/Chrome";
-import { inkClass } from "@/components/Stamp";
+import { Arrowed, inkClass } from "@/components/Stamp";
 import { FnoVignette, VoiceVignette } from "@/components/Vignettes";
 import { caseStudies } from "@/data/site";
 
@@ -37,20 +37,22 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
 					<div>
 						<h1 className="font-display text-[clamp(3.2rem,8vw,6rem)] leading-[0.88] font-black uppercase">{c.title}</h1>
 						<p className="mt-6 max-w-[48ch] text-xl leading-relaxed text-ink-soft">{c.summary}</p>
-						<p className="mt-4 font-mono text-xs tracking-[0.14em] text-ink-mute uppercase tabular-nums">{c.year} · {c.role}</p>
+						<p className="mt-4 catalogue text-ink-mute uppercase tabular-nums">{c.year} · {c.role}</p>
 					</div>
 					{/* The case study's own stamp, at single size. */}
 					<div className="w-fit shrink-0 bg-post p-5">
-						<div className={`perforated w-52 p-3 ${inkClass[c.ink]}`}>
+						<div className={`perforated w-52 p-3 [animation:land_900ms_var(--ease-out-expo)_150ms_both] ${inkClass[c.ink]}`}>
 							<div className="flex aspect-[4/5] flex-col justify-between border-2 border-current p-3">
-								<span className="font-mono text-[11px] tracking-[0.14em] uppercase">भारत · {c.year}</span>
+								<span className="catalogue">भारत · {c.year}</span>
 								{c.slug === "one-click-fno" && (
 									<div className="my-3 min-h-0 flex-1">
 										<FnoVignette />
 									</div>
 								)}
 								{c.slug === "voice-trading-agent" && <VoiceVignette />}
-								<span className="font-display text-6xl leading-[0.85] font-black uppercase">{c.denomination}</span>
+								<span className="font-display text-6xl leading-[0.85] font-black uppercase">
+									<Arrowed value={c.denomination} />
+								</span>
 							</div>
 						</div>
 					</div>
@@ -58,12 +60,12 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
 
 				<dl className="mt-12 flex flex-wrap gap-x-10 gap-y-3 border-y border-rule py-5">
 					<div>
-						<dt className="font-mono text-[11px] tracking-[0.14em] text-ink-mute uppercase">Stack</dt>
+						<dt className="catalogue text-ink-mute uppercase">Stack</dt>
 						<dd className="mt-1 font-semibold">{c.stack.join(", ")}</dd>
 					</div>
 					{c.links?.map((l) => (
 						<div key={l.href}>
-							<dt className="font-mono text-[11px] tracking-[0.14em] text-ink-mute uppercase">Link</dt>
+							<dt className="catalogue text-ink-mute uppercase">Link</dt>
 							<dd className="mt-1">
 								<a href={l.href} className="inline-flex items-center gap-1 font-semibold text-ultra">
 									{l.label}
@@ -91,7 +93,7 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
 					className="group mt-20 flex items-center justify-between gap-6 border-t-2 border-ink pt-8 no-underline"
 				>
 					<span>
-						<span className="block font-mono text-[11px] tracking-[0.14em] text-ink-mute uppercase">Next stamp</span>
+						<span className="block catalogue text-ink-mute uppercase">Next stamp</span>
 						<span className="mt-1 block text-2xl font-bold group-hover:underline">{next.title}</span>
 					</span>
 					<ArrowRight className="size-7 shrink-0 transition-transform duration-500 ease-out-expo group-hover:translate-x-1" aria-hidden="true" />

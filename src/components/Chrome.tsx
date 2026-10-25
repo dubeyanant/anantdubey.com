@@ -14,7 +14,7 @@ export function Selvedge({ tone = "sheet" }: { tone?: "sheet" | "paper" }) {
 	const onSheet = tone === "sheet";
 	return (
 		<div
-			className={`flex flex-wrap items-center justify-between gap-x-8 gap-y-3 font-mono text-[11px] tracking-[0.16em] uppercase tabular-nums sm:text-xs ${
+			className={`flex flex-wrap items-center justify-between gap-x-8 gap-y-3 catalogue sm:text-xs ${
 				onSheet ? "text-paper" : "text-ink"
 			}`}
 		>
@@ -58,7 +58,7 @@ export async function PostBox() {
 				<div className="mx-auto mb-10 h-4 w-48 rounded-full bg-ink" aria-hidden="true" />
 				<h2 className="font-display text-[clamp(3.5rem,9vw,7rem)] leading-[0.85] font-black uppercase">Post a letter</h2>
 				<p className="mx-auto mt-6 max-w-[40ch] text-lg leading-relaxed">
-					Building something in mobile or AI? Write to me; it goes straight to my inbox.
+					Working on something in mobile or AI? Send me an email.
 				</p>
 				<a
 					href={`mailto:${site.email}`}
@@ -67,9 +67,8 @@ export async function PostBox() {
 					<Mail className="size-5" aria-hidden="true" />
 					{site.email}
 				</a>
-				<ul className="mt-12 flex flex-wrap justify-center gap-x-8 gap-y-3 font-mono text-xs tracking-[0.16em] uppercase">
+				<ul className="mt-12 flex flex-wrap justify-center gap-x-8 gap-y-3 catalogue">
 					{[
-						["Résumé (PDF)", "/anant-dubey-resume.pdf"],
 						["LinkedIn", site.social.linkedin],
 						["GitHub", site.social.github],
 						["X", site.social.x],
@@ -83,7 +82,7 @@ export async function PostBox() {
 						</li>
 					))}
 				</ul>
-				<p className="mt-14 font-mono text-[11px] tracking-[0.16em] uppercase">
+				<p className="mt-14 catalogue">
 					Issued by Anant Dubey · Mumbai · {year}
 				</p>
 			</div>

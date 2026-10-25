@@ -8,12 +8,12 @@ export const site = {
 	email: "anantjdubey@gmail.com",
 	location: "Mumbai",
 	claim: {
-		lead: "Flutter engineer. I ship mobile that moves money for",
+		lead: "Flutter engineer in Mumbai. I work on a trading app with",
 		chip: "200K+ daily users",
-		tail: ", and I build AI agents that act on a spoken sentence.",
+		tail: " and build AI agents that act on voice commands.",
 	},
 	description:
-		"Anant Dubey is a Flutter engineer in Mumbai: one-click F&O trading on a 200K+ DAU broking app, Flutter Web and WASM, CI/CD, and voice AI agents built on MCP.",
+		"Anant Dubey is a Flutter engineer in Mumbai. He built one-click F&O trading for a broking app with 200K+ daily users and builds voice AI agents with MCP.",
 	social: {
 		github: "https://github.com/dubeyanant",
 		linkedin: "https://www.linkedin.com/in/anantdubey/",
@@ -45,7 +45,7 @@ export const sheet: SheetStamp[] = [
 		issue: "भारत · One-tap F&O",
 		year: "2024–26",
 		denomination: "10%",
-		caption: "of the app's total trade volume, from one module I architected",
+		caption: "of trade volume runs through my F&O module",
 		vignette: "fno",
 		postmark: ["Shipped", "Mumbai", "2025"],
 	},
@@ -56,17 +56,17 @@ export const sheet: SheetStamp[] = [
 		issue: "QA tooling",
 		year: "2026",
 		denomination: "2MO→4D",
-		caption: "UI and accessibility testing, cut by an inspection tool I built",
+		caption: "My inspection tool cut UI and accessibility testing from two months to four days",
 		vignette: "countdown",
 	},
 	{
 		slug: "voice",
 		href: "/work/voice-trading-agent",
 		ink: "plum",
-		issue: "Ideathon · won",
+		issue: "Ideathon winner",
 		year: "2026",
 		denomination: "Voice→MCP",
-		caption: "Speech to tool calls to brokerage actions, read back aloud",
+		caption: "A voice agent that runs brokerage actions through MCP tools",
 		vignette: "voice",
 	},
 	{
@@ -76,7 +76,7 @@ export const sheet: SheetStamp[] = [
 		issue: "Promotion",
 		year: "2026",
 		denomination: "<2 yrs",
-		caption: "Associate Developer to Assistant Manager",
+		caption: "Promoted from Associate Developer to Assistant Manager",
 	},
 	{
 		slug: "my-people",
@@ -85,7 +85,7 @@ export const sheet: SheetStamp[] = [
 		issue: "Play Store",
 		year: "2024",
 		denomination: "My People",
-		caption: "A Flutter app with Gemini personas, published",
+		caption: "My Flutter app on Google Play, with Gemini personas",
 	},
 ];
 
@@ -112,30 +112,30 @@ export const caseStudies: CaseStudy[] = [
 		year: "2024–26",
 		role: "Architect and developer, Sharekhan mobile team",
 		stack: ["Flutter", "Dart", "Riverpod", "REST + byte-level APIs"],
-		summary: "I architected and delivered the one-click F&O module that now generates 10% of all trade volume in the Sharekhan app.",
+		summary: "I architected and built the one-click F&O module in the Sharekhan app. It now handles 10% of the app's trade volume.",
 		sections: [
 			{
 				heading: "The setting",
 				body: [
-					"Sharekhan's trading app serves 200K+ daily active users, and the mobile team ships feature releases every two months. Market data and order APIs arrive as JSON and as byte-level payloads that have to be parsed correctly on a phone, in real time.",
+					"Sharekhan's trading app has 200K+ daily active users. The mobile team ships a release every two months. Market data and order APIs send JSON and byte-level payloads, and the app parses both in real time.",
 				],
 			},
 			{
 				heading: "What I owned",
 				body: [
-					"I architected and delivered the one-click F&O trading module: the flow that takes a trader from instrument to placed order in a single tap, inside a live, regulated broking app.",
-					"Around the same period I refactored the legacy codebase onto Riverpod with SOLID principles, which made modules like this one easier to scale and maintain, and I designed the CI/CD pipeline and SDLC practices that several teams now use to ship.",
+					"I architected and built the one-click F&O module. A trader picks an instrument and places the order with one tap.",
+					"In the same period I moved the legacy code to Riverpod and SOLID principles, which made new modules easier to build. I also designed the CI/CD pipeline and release process that several teams use today.",
 				],
 			},
 			{
 				heading: "The result",
 				body: [
-					"The module now generates 10% of the app's total trade volume.",
-					"It also changed how I work: trading UX is unforgiving, so I design for the fastest path first and treat parsing, state and testing (unit and integration) as part of the feature, not an afterthought.",
+					"The module now handles 10% of the app's total trade volume.",
+					"Trading screens leave no room for a slow path. I design the fastest path first and write the unit and integration tests with the feature.",
 				],
 			},
 		],
-		note: "This was built inside Sharekhan's production app, so internal screens, data and architecture details stay private. I'm happy to walk through the engineering decisions in person.",
+		note: "I built this inside Sharekhan's production app, so I can't share screens, data or architecture here. I'm happy to talk through the engineering decisions.",
 	},
 	{
 		slug: "voice-trading-agent",
@@ -145,29 +145,29 @@ export const caseStudies: CaseStudy[] = [
 		year: "2026",
 		role: "Builder and pitch, Ideathon 2026",
 		stack: ["Speech-to-text", "MCP tools", "Brokerage APIs", "Text-to-speech"],
-		summary: "A voice AI agent for broking apps that won Ideathon 2026 in front of a 12-member jury.",
+		summary: "A voice AI agent for broking apps. It won Ideathon 2026, judged by a 12-member jury.",
 		sections: [
 			{
 				heading: "The idea",
 				body: [
-					"Trading apps make you hunt through screens. I wanted to see how far a single spoken sentence could go: say what you want, and the app does it and tells you it's done.",
+					"Trading apps make you tap through a lot of screens. I wanted one spoken sentence to do the same job. You say what you want, and the app does it and tells you when it's done.",
 				],
 			},
 			{
 				heading: "How it works",
 				body: [
-					"Speech-to-text services turn what the user says into structured input. That input drives MCP tool calls, and each tool hits a brokerage API to carry out the action. The confirmation comes back and text-to-speech reads it aloud.",
-					"It ran against a demo brokerage app, not the production one, but the tools called real APIs and returned real confirmations.",
+					"Speech-to-text turns the user's words into structured input. That input triggers MCP tool calls. Each tool calls a brokerage API, and text-to-speech reads the confirmation back.",
+					"It ran on a demo brokerage app. The tools still called real APIs and got real confirmations back.",
 				],
 			},
 			{
 				heading: "What happened next",
 				body: [
-					"The agent won Ideathon 2026. In the hackathon that followed, I mentored two teams of eight people each and steered both to a successful production deployment.",
+					"The agent won Ideathon 2026. In the hackathon after it, I mentored two teams of eight, and both shipped to production.",
 				],
 			},
 		],
-		note: "The original was an internal project, so there's no public code or video. Happy to walk through how it was built.",
+		note: "It was an internal project, so there's no public code or video. I can walk you through how I built it.",
 	},
 	{
 		slug: "ui-inspection-tool",
@@ -177,26 +177,26 @@ export const caseStudies: CaseStudy[] = [
 		year: "2026",
 		role: "Built for Sharekhan's QA and Design teams",
 		stack: ["Flutter", "Internal tooling"],
-		summary: "An inspection tool that cut UI and accessibility testing from two months to four days.",
+		summary: "A tool I built that cut UI and accessibility testing from two months to four days.",
 		sections: [
 			{
 				heading: "The problem",
 				body: [
-					"On a trading app this size, UI and accessibility testing by QA and Design took about two months.",
+					"UI and accessibility testing for the trading app took the QA and Design teams about two months.",
 				],
 			},
 			{
 				heading: "What I built",
 				body: [
-					"A UI inspection tool, built for the QA and Design teams that run those checks.",
+					"I built a UI inspection tool that those teams use to run the checks.",
 				],
 			},
 			{
 				heading: "The result",
-				body: ["UI and accessibility testing went from two months to four days."],
+				body: ["The same testing now takes four days."],
 			},
 		],
-		note: "An internal tool, so screenshots stay private.",
+		note: "It's an internal tool, so I can't show screenshots.",
 	},
 	{
 		slug: "my-people",
@@ -206,19 +206,19 @@ export const caseStudies: CaseStudy[] = [
 		year: "2024",
 		role: "Designed, built and published solo",
 		stack: ["Flutter", "Figma", "Gemini"],
-		summary: "A human diary: an app that helps you remember the people in your life, published on Google Play.",
+		summary: "An app that helps you remember the people in your life. It's live on Google Play.",
 		links: [{ label: "Google Play", href: "https://play.google.com/store/apps/details?id=com.infiniteants.mypeople" }],
 		sections: [
 			{
 				heading: "Why",
 				body: [
-					"My People is a human diary: it helps you remember and organise the important details about the people in your life (notes, preferences, key information for each person) so you never forget what matters.",
+					"My People is a diary about the people you know. You save notes, preferences and important details for each person so you don't forget them.",
 				],
 			},
 			{
 				heading: "What I did",
 				body: [
-					"I designed it in Figma, built it in Flutter, and published it to the Play Store myself. Gemini generates a personalised AI persona for each person you save, to help you recall and reconnect.",
+					"I designed it in Figma, built it in Flutter and published it on the Play Store myself. Gemini creates an AI persona for each person you save, which helps you remember them.",
 				],
 			},
 		],
@@ -235,21 +235,18 @@ export type AlbumEntry = {
 };
 
 export const album: AlbumEntry[] = [
-	{ title: "Chitt", kind: "Flutter app", status: "In beta", ink: "plum", blurb: "A private journal for the moments that hit you during the day: a few words, a voice note or a photo, stamped with the time and weather.", href: "/chitt" },
-	{ title: "Coach", kind: "Android app", status: "In development", ink: "emerald", blurb: "A workout log that acts as a personal trainer, reading your training history, food and recovery. Built AI-directed.", href: "/coach" },
-	{ title: "Paisa", kind: "Web dashboard", status: "Working build", ink: "saffron", blurb: "Personal finance insights on Next.js and Supabase." },
-	{ title: "animated_pill", kind: "Flutter package", status: "On pub.dev", ink: "ultra", blurb: "An animated pill widget, published for other Flutter developers.", href: "https://pub.dev/packages/animated_pill" },
-	{ title: "SEBI Securities Market Hackathon", kind: "Hackathon", status: "2025", ink: "ultra", blurb: "A Next.js MVP to open up India's bond markets: fractional bonds, incentives and a gamified bond-education module. Solo front-end architect." },
-	{ title: "Roarathon 3.0", kind: "Hackathon", status: "Runner-up, 2025", ink: "saffron", blurb: "A 30-hour MVP automating IOM processes with n8n workflows, AI agents and Next.js. Runner-up among 90+ participants." },
-	{ title: "Revisio", kind: "Web app + extension", status: "Live", ink: "emerald", blurb: "A place where you actually look at what you save for later.", href: "https://revisio.vercel.app" },
-	{ title: "Quizly", kind: "Web game", status: "Retired", ink: "plum", blurb: "A real-time multiplayer quiz on Next.js and WebSockets." },
-	{ title: "Link List", kind: "Web app", status: "Retired", ink: "ink", blurb: "Shareable lists that update live and delete themselves after seven days. Next.js and Supabase." },
+	{ title: "Chitt", kind: "Flutter app", status: "In beta", ink: "plum", blurb: "A private journal for moments during your day. Save a few words, a voice note or a photo, and Chitt adds the time and weather.", href: "/chitt" },
+	{ title: "Coach", kind: "Android app", status: "In development", ink: "emerald", blurb: "A workout log that works like a personal trainer. It reads your training history, food and recovery. Built mostly with AI coding tools.", href: "/coach" },
+	{ title: "Paisa", kind: "Web app", status: "Working build", ink: "saffron", blurb: "Personal finance insights, built with Next.js and Supabase." },
+	{ title: "animated_pill", kind: "Flutter package", status: "Published", ink: "ultra", blurb: "An animated pill widget for Flutter apps, published on pub.dev.", href: "https://pub.dev/packages/animated_pill" },
+	{ title: "SEBI Securities Market Hackathon", kind: "Hackathon", status: "2025", ink: "ultra", blurb: "A Next.js MVP for India's bond market, with fractional bonds, incentives and a game that teaches how bonds work. I was the only front-end architect." },
+	{ title: "Roarathon 3.0", kind: "Hackathon", status: "Runner-up, 2025", ink: "saffron", blurb: "An MVP built in 30 hours that automates IOM processes with n8n workflows, AI agents and Next.js. Runner-up out of 90+ participants." },
 ];
 
 export const experience = [
-	{ years: "2026 –", role: "Assistant Manager", org: "Sharekhan, Mumbai", detail: "Leading AI integration in the mobile team. Built the UI inspection tool and the Razorpay Collect and Intent fund-transfer flows." },
-	{ years: "2024–26", role: "Associate Developer", org: "Sharekhan, Mumbai", detail: "One-click F&O (10% of trade volume), Riverpod refactor, Firebase engagement workflows, Flutter Web/WASM migration, CI/CD." },
-	{ years: "2024", role: "Intern Developer", org: "Sharekhan, Navi Mumbai", detail: "Helped migrate the mobile apps from native Android/iOS to Flutter; point of contact for UI/UX fixes." },
+	{ years: "2026 –", role: "Assistant Manager", org: "Sharekhan, Mumbai", detail: "I lead AI integration in the mobile team. I built the UI inspection tool and the Razorpay Collect and Intent fund-transfer flows." },
+	{ years: "2024–26", role: "Associate Developer", org: "Sharekhan, Mumbai", detail: "Built one-click F&O, which handles 10% of trade volume. Moved the code to Riverpod, set up Firebase engagement workflows, migrated the app to Flutter Web and WASM, and built the CI/CD pipeline." },
+	{ years: "2024", role: "Intern Developer", org: "Sharekhan, Navi Mumbai", detail: "Helped move the mobile apps from native Android and iOS to Flutter. Handled the UI and UX fixes." },
 	{ years: "2022–24", role: "M.Sc. Computer Science", org: "MIT World Peace University, Pune", detail: "CGPA 8.6." },
 ] as const;
 

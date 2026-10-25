@@ -18,11 +18,15 @@ export async function generateMetadata({ params }: PageProps<"/after-hours/[kind
 
 export default async function AfterHoursPiece({ params }: PageProps<"/after-hours/[kind]/[slug]">) {
 	const { kind, slug } = await params;
-	if (!kinds.includes(kind as Kind) || !list(kind as Kind).some((x) => x.slug === slug)) notFound();
+	if (!kinds.includes(kind as Kind)) notFound();
+	const all = list(kind as Kind);
+	const i = all.findIndex((x) => x.slug === slug);
+	if (i < 0) notFound();
+	const link = (e?: (typeof all)[number]) => e && { href: `/after-hours/${kind}/${e.slug}`, title: e.title };
 	return (
 		<>
 			<PaperHeader />
-			<Letter entry={read(kind as Kind, slug)} back={{ href: `/after-hours#${kind}`, label: "After hours" }} />
+			<Letter entry={read(kind as Kind, slug)} back={{ href: `/after-hours#${kind}`, label: "After hours" }} prev={link(all[i - 1])} next={link(all[i + 1])} />
 			<PostBox />
 		</>
 	);
