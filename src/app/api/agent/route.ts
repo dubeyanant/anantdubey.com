@@ -64,6 +64,8 @@ export async function POST(request: Request) {
 		if (turn.error) console.error("agent model call failed:", turn.error);
 		return Response.json({
 			fallback: Boolean(turn.error),
+			// TEMP: diagnose the first live model call; remove once it works.
+			reason: turn.error?.replace(/(sk-|AIza)[\w-]+/g, "[key]").slice(0, 300),
 			keyed: hasKey,
 			reply: turn.reply,
 			events: turn.events,
