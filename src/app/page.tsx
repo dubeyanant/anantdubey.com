@@ -124,7 +124,7 @@ export default function Home() {
 				</section>
 
 				{/* The album: everything else, mounted as stamps of mixed formats on a dark stockbook leaf. */}
-				<section id="album" className="bg-[#221d19] text-paper">
+				<section id="album" className="bg-leaf text-paper">
 					<div className="mx-auto max-w-6xl px-5 py-20 sm:px-10 sm:py-24">
 						<h2 className="font-display text-[clamp(3rem,7vw,5.5rem)] leading-[0.88] font-black uppercase">The album</h2>
 						<p className="mt-4 max-w-[52ch] text-lg text-paper-shade">Apps, packages and hackathon builds, the liveliest first.</p>
@@ -152,7 +152,7 @@ export default function Home() {
 									</div>
 								);
 								return (
-									<li key={a.title} className={`perforated p-2.5 ${format}`} style={{ "--hole": "#221d19" } as React.CSSProperties}>
+									<li key={a.title} className={`perforated p-2.5 ${format}`} style={{ "--hole": "var(--color-leaf)" } as React.CSSProperties}>
 										{a.href ? (
 											<a href={a.href} className="block h-full no-underline transition-transform duration-500 ease-out-expo hover:-translate-y-1">
 												{face}

@@ -18,6 +18,7 @@
 	--color-inland: #c9dcf0;
 	--color-inland-card: #dbe8f6;
 	--color-inland-ink: #14325c;
+	--color-leaf: #221d19; /* stockbook leaf behind the album */
 
 	--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
