@@ -4,7 +4,7 @@ import { PaperHeader, PostBox } from "@/components/Chrome";
 import { Letter } from "@/components/Letter";
 import { type Kind, list, read } from "@/lib/content";
 
-const kinds: Kind[] = ["letters", "logs", "tales", "verses"];
+const kinds: Kind[] = ["logs", "tales", "verses"];
 
 export function generateStaticParams() {
 	return kinds.flatMap((kind) => list(kind).map((e) => ({ kind, slug: e.slug })));

@@ -72,15 +72,6 @@ export async function Letter({
 							{entry.body.trim()}
 						</p>
 					)}
-					{entry.canonical && (
-						<p className="mt-12 border-t border-rule pt-5 text-sm text-ink-mute">
-							First published on{" "}
-							<a href={entry.canonical} className="text-ultra">
-								tech.anantdubey.com
-							</a>
-							.
-						</p>
-					)}
 				</article>
 
 				{(prev || next) && (

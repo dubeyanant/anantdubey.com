@@ -12,11 +12,9 @@ const nextConfig: NextConfig = {
 		},
 	},
 	async redirects() {
-		const techBlog = [{ type: "host" as const, value: "tech.anantdubey.com" }];
 		return [
-			// The old Hashnode blog: once tech.anantdubey.com points at this project, every post lands on its copy here.
-			{ source: "/", has: techBlog, destination: "https://www.anantdubey.com/writing", permanent: true },
-			{ source: "/:slug", has: techBlog, destination: "https://www.anantdubey.com/writing/:slug", permanent: true },
+			// Letters were folded into logs.
+			{ source: "/after-hours/letters/:slug", destination: "/after-hours/logs/:slug", permanent: true },
 			// Tales that were excerpts are now the full stories; the unfinished log is gone.
 			{ source: "/after-hours/tales/night-stroll-part1", destination: "/after-hours/tales/night-stroll", permanent: true },
 			{ source: "/after-hours/tales/the-divinity-part1", destination: "/after-hours/tales/the-divinity-and-her-servants", permanent: true },

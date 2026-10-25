@@ -10,7 +10,7 @@ import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { unified } from "unified";
 
-export type Kind = "writing" | "letters" | "logs" | "tales" | "verses";
+export type Kind = "writing" | "logs" | "tales" | "verses";
 
 export type Entry = {
 	kind: Kind;
@@ -99,7 +99,6 @@ export function formatDate(iso: string): string {
 
 export const kindLabel: Record<Kind, string> = {
 	writing: "Writing",
-	letters: "Letters",
 	logs: "Logs",
 	tales: "Tales",
 	verses: "Verses",

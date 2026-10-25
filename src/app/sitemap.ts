@@ -10,6 +10,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 		{ url: u("/after-hours"), priority: 0.5 },
 		...caseStudies.map((c) => ({ url: u(`/work/${c.slug}`), priority: 0.9 })),
 		...list("writing").map((p) => ({ url: u(`/writing/${p.slug}`), lastModified: p.date, priority: 0.6 })),
-		...(["letters", "logs", "tales", "verses"] as const).flatMap((k) => list(k).map((e) => ({ url: u(`/after-hours/${k}/${e.slug}`), lastModified: e.date, priority: 0.4 }))),
+		...(["logs", "tales", "verses"] as const).flatMap((k) => list(k).map((e) => ({ url: u(`/after-hours/${k}/${e.slug}`), lastModified: e.date, priority: 0.4 }))),
 	];
 }
