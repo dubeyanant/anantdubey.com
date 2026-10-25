@@ -35,9 +35,12 @@
 </ul>
 <h3>The AI coach</h3>
 <p>The coach is off until you turn it on. Its chats and food photos stay on your phone. What it learns about you, your check-ins and its plans are saved to your account.</p>
+<p>If you report one of the coach's replies, that reply, your message before it and your note are saved to your account. We read reports to make the coach better.</p>
+<h3>Crash reports</h3>
+<p>If Coach crashes, a crash report goes to Firebase Crashlytics, a Google service. It says where in the app the crash happened, the app and Android versions, the phone model and a random ID for this install. It holds nothing you logged.</p>
 
 <h2>How we use it</h2>
-<p>Only to run Coach for you. That means saving your logs, showing your progress, working out your recovery score and, with the coach on, coaching you. We don't show ads. We don't sell your data. Coach has no advertising or analytics trackers.</p>
+<p>Only to run Coach for you. That means saving your logs, showing your progress, working out your recovery score and, with the coach on, coaching you. We don't show ads. We don't sell your data. Coach has no advertising or analytics trackers. Crash reports are used only to fix crashes.</p>
 
 <h2>Where it's kept</h2>
 <p>On your phone, and in your account on our database. The database runs on Supabase, on servers in Mumbai, India. That's what lets you sign in on a new phone and find everything there. Data travels encrypted. Only your account can read its own rows.</p>
@@ -46,7 +49,7 @@
 <ul>
 <li><strong>Supabase</strong> hosts our database and sign-in.</li>
 <li><strong>Anthropic</strong> runs Claude, the AI behind the coach. Only with the coach on, the data you allow goes to Anthropic for each reply. Anthropic handles it under its <a href="https://www.anthropic.com/legal">commercial terms</a>. It doesn't train its models on this data.</li>
-<li><strong>Google</strong> handles Continue with Google. Health Connect itself stays on your phone.</li>
+<li><strong>Google</strong> handles Continue with Google and receives crash reports through Firebase Crashlytics. Health Connect itself stays on your phone.</li>
 </ul>
 <p>Nobody else. We would only share data if the law required it.</p>
 
