@@ -89,9 +89,6 @@ export default function Home() {
 										</StampLink>
 									</li>
 								))}
-								<li className="hidden border-2 border-dashed border-paper p-4 catalogue [animation:print-in_760ms_var(--ease-out-expo)_800ms_both] lg:flex lg:items-end">
-									The next one isn&apos;t printed yet.
-								</li>
 							</ul>
 						</section>
 						<div className="-mt-3 flex flex-wrap gap-3 lg:hidden">{ctas}</div>

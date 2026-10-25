@@ -87,6 +87,15 @@ export const sheet: SheetStamp[] = [
 		denomination: "My People",
 		caption: "My Flutter app on Google Play, with Gemini personas",
 	},
+	{
+		slug: "beta",
+		href: "#album",
+		ink: "emerald",
+		issue: "Play Store · Beta",
+		year: "2026",
+		denomination: "Chitt + Coach",
+		caption: "Two more of my apps, in beta on Google Play",
+	},
 ];
 
 export type CaseStudy = {
@@ -236,7 +245,7 @@ export type AlbumEntry = {
 
 export const album: AlbumEntry[] = [
 	{ title: "Chitt", kind: "Flutter app", status: "In beta", ink: "plum", blurb: "A private journal for moments during your day. Save a few words, a voice note or a photo, and Chitt adds the time and weather.", href: "/chitt" },
-	{ title: "Coach", kind: "Android app", status: "In development", ink: "emerald", blurb: "A workout log that works like a personal trainer. It reads your training history, food and recovery. Built mostly with AI coding tools.", href: "/coach" },
+	{ title: "Coach", kind: "Android app", status: "In beta", ink: "emerald", blurb: "A workout log that works like a personal trainer. It reads your training history, food and recovery. Built mostly with AI coding tools.", href: "/coach" },
 	{ title: "Paisa", kind: "Web app", status: "Working build", ink: "saffron", blurb: "Personal finance insights, built with Next.js and Supabase." },
 	{ title: "animated_pill", kind: "Flutter package", status: "Published", ink: "ultra", blurb: "An animated pill widget for Flutter apps, published on pub.dev.", href: "https://pub.dev/packages/animated_pill" },
 	{ title: "SEBI Securities Market Hackathon", kind: "Hackathon", status: "2025", ink: "ultra", blurb: "A Next.js MVP for India's bond market, with fractional bonds, incentives and a game that teaches how bonds work. I was the only front-end architect." },
