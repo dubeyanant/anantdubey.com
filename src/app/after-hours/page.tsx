@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 
 // A contents page, kept quiet on purpose: titles only, and the pieces open when someone chooses one.
 const shelves: { kind: Kind; title: string }[] = [
+	{ kind: "letters", title: "Letters" },
 	{ kind: "logs", title: "Logs" },
 	{ kind: "tales", title: "Tales" },
 	{ kind: "verses", title: "Verses" },
@@ -29,7 +30,7 @@ export default function AfterHours() {
 				<p data-reveal className="mt-4 max-w-[52ch] text-ink-soft">
 					Writing I do for myself.
 				</p>
-				<div className="mt-14 grid gap-12 border-t-2 border-ink pt-8 md:grid-cols-3 md:gap-10">
+				<div className="mt-14 grid gap-12 border-t-2 border-ink pt-8 sm:grid-cols-2 sm:gap-10 lg:grid-cols-4">
 					{shelves.map((s) => (
 						<section key={s.kind} id={s.kind} aria-labelledby={`${s.kind}-h`} data-reveal className="scroll-mt-8">
 							<h2 id={`${s.kind}-h`} className="catalogue text-ink-mute">

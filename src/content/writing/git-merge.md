@@ -3,7 +3,6 @@ title: "Git Merge: A to Z"
 date: "2025-04-02"
 summary: "Learn the essentials of Git merging, including when to merge vs rebase, handling conflicts, and preserving history for smoother version control"
 tags: ["GitHub","Git","GitLab","merge-conflict"]
-canonical: "https://tech.anantdubey.com/git-merge"
 ---
 
 Merging in Git sounds simple, and it _can_ be…but if you've ever ended up in a weird conflict, a detached HEAD, or a tangled rebase, you know it's not always smooth.
@@ -284,9 +283,9 @@ git merge branch
 
 ## Here’s a complementary Git Cheat Sheet 🎀
 
-[![Git Cheat Sheet](https://cdn.hashnode.com/res/hashnode/image/upload/v1743532126046/60449ea3-1251-4741-ad60-eb1816535aeb.jpeg)](https://education.github.com/git-cheat-sheet-education.pdf)
+[![Git Cheat Sheet](/writing/git-merge/01.jpg)](https://education.github.com/git-cheat-sheet-education.pdf)
 
-[![Git Cheat Sheet](https://cdn.hashnode.com/res/hashnode/image/upload/v1743532167579/cf65973c-aa22-41f2-8ed2-11ad8ceb82e0.jpeg)](https://education.github.com/git-cheat-sheet-education.pdf)
+[![Git Cheat Sheet](/writing/git-merge/02.jpg)](https://education.github.com/git-cheat-sheet-education.pdf)
 
 [Link](https://education.github.com/git-cheat-sheet-education.pdf) 👈 to the original PDF in case these images don’t load.
 

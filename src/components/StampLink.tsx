@@ -98,6 +98,21 @@ export function StampLink({
 		setCancelled(readCancelled().includes(slug));
 	}, [slug]);
 
+	// Next keeps a page alive (hidden) after you leave it, so coming back would show the torn halves.
+	// Mend the stamp when the page is hidden, and when the browser restores it from its back/forward cache.
+	useLayoutEffect(() => {
+		const mend = (e?: PageTransitionEvent) => {
+			if (e && !e.persisted) return;
+			setTear(null);
+			setCancelled(readCancelled().includes(slug));
+		};
+		window.addEventListener("pageshow", mend);
+		return () => {
+			window.removeEventListener("pageshow", mend);
+			setTear(null);
+		};
+	}, [slug]);
+
 	// Run the tear: the crack races down (accelerating, like a real tear), the halves open into a V, then fall.
 	useLayoutEffect(() => {
 		if (!tear || !leftRef.current || !rightRef.current) return;

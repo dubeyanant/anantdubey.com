@@ -3,7 +3,6 @@ title: "Why I Use Supabase for MVPs (and beyond)"
 date: "2025-03-31"
 summary: "Discover why Supabase is ideal for building MVPs and beyond, offering speed, flexibility, and reliability with built-in real-time features"
 tags: ["tech ","supabase","Next.js","Databases","mvp","Firebase","Flutter"]
-canonical: "https://tech.anantdubey.com/why-i-use-supabase"
 ---
 
 When you’re building MVPs, _speed_ matters — but so does flexibility. You want a backend that’s fast to set up but doesn’t fall apart the moment your product grows.
@@ -148,7 +147,7 @@ The beauty is: **no need to manage sockets yourself**. Supabase handles it.
 
 Here’s the full version of my MVPs data flow:
 
-![](https://cdn.hashnode.com/res/hashnode/image/upload/v1743400831277/c86a6ccb-caa0-43fb-bd06-df8f8ea04561.png)
+![](/writing/why-i-use-supabase/01.png)
 
 No Firebase Firestore triggers, no polling. Just clean Postgres + WebSocket events.
 

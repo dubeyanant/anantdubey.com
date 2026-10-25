@@ -3,7 +3,6 @@ title: "Native Bridge between Flutter and Android"
 date: "2024-03-19"
 summary: "create a native bridge using platform channels between flutter and android in kotlin"
 tags: ["platform channels","Flutter","Android","Native bridge","Kotlin","Dart"]
-canonical: "https://tech.anantdubey.com/native-bridge"
 ---
 
 ## Introduction

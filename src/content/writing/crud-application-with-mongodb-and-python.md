@@ -3,7 +3,6 @@ title: "CRUD application with MongoDB and Python"
 date: "2023-03-24"
 summary: "In this article, we will explore how to build a CRUD (Create, Read, Update, Delete) application using MongoDB and Python. We will start by discussing what…"
 tags: ["MongoDB","Python","crud"]
-canonical: "https://tech.anantdubey.com/crud-application-with-mongodb-and-python"
 ---
 
 ## **Introduction**

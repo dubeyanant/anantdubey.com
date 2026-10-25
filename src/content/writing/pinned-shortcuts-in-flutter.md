@@ -3,7 +3,6 @@ title: "Creating pinned shortcuts in Flutter!"
 date: "2024-03-21"
 summary: "create pinned shortcuts in flutter using platform channels and native android"
 tags: ["Flutter","Android","Kotlin"]
-canonical: "https://tech.anantdubey.com/pinned-shortcuts-in-flutter"
 ---
 
 ## Introduction
@@ -14,7 +13,7 @@ There are three types of shortcuts in Android that can be implemented in Flutter
 
 In this article, we are going to create pinned shortcuts in Flutter. We will see this example for the use case where we'll launch a different screen if clicked on the pinned shortcut instead of the home screen, which opens by default in the app.
 
-As there is no direct provision for creating pinned shortcuts in Flutter, we are going to use native bridge (platform channels) between Flutter and Android Native to establish two-way communication. I'll not be going in depth on the creation of platform channels for data transfer, but you can see the full approach with code in my previous article [here](https://anantdubey.hashnode.dev/native-bridge).
+As there is no direct provision for creating pinned shortcuts in Flutter, we are going to use native bridge (platform channels) between Flutter and Android Native to establish two-way communication. I'll not be going in depth on the creation of platform channels for data transfer, but you can see the full approach with code in my previous article [here](/writing/native-bridge).
 
 **Note** that I'll be using Kotlin as my native Android language.
 
@@ -103,7 +102,7 @@ To accommodate two functions, we will now modify the `home.dart` file. `sendNati
 
 Now, if you long press on the button in the app, it will prompt you to create a pinned shortcut with the name "_Another Screen_" and it'll be placed on the mobile home screen. After you terminate the app, clicking on that shortcut from the home screen will take you to the `AnotherScreen`.
 
-![](https://cdn.hashnode.com/res/hashnode/image/upload/v1711020770851/2ea341ef-1743-4ce2-8bec-53efd403c665.gif)
+![](/writing/pinned-shortcuts-in-flutter/01.gif)
 
 You now know how to create pinned shortcuts in Flutter. If you require the full source code of the project, you can click [here](https://github.com/dubeyanant/pinned_shortcuts). It also contains an additional feature, which is to send a dynamic image for the shortcut icon from Flutter.
 

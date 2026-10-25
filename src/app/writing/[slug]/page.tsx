@@ -12,8 +12,7 @@ export async function generateMetadata({ params }: PageProps<"/writing/[slug]">)
 	const { slug } = await params;
 	const p = list("writing").find((x) => x.slug === slug);
 	if (!p) return {};
-	// Until tech.anantdubey.com redirects here, the original post stays canonical.
-	return { title: p.title, description: p.summary, alternates: { canonical: p.canonical ?? `/writing/${slug}` } };
+	return { title: p.title, description: p.summary, alternates: { canonical: `/writing/${slug}` } };
 }
 
 export default async function WritingPost({ params }: PageProps<"/writing/[slug]">) {

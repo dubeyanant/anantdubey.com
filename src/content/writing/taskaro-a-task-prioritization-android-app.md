@@ -3,7 +3,6 @@ title: "Taskaro: A Task Prioritization Android App"
 date: "2023-05-29"
 summary: "Efficiently Prioritize and Organize Your Tasks"
 tags: ["Android","Firebase","Material Design","UI","Productivity"]
-canonical: "https://tech.anantdubey.com/taskaro-a-task-prioritization-android-app"
 ---
 
 ## Introduction
@@ -46,25 +45,25 @@ On the technical side, Taskaro is built using Java and developed in Android Stud
 
 The app starts with onboarding screens to familiarize the user with its purpose. Subsequently, users are prompted to either login or sign up using their email address.
 
-![](https://cdn.hashnode.com/res/hashnode/image/upload/v1685343334247/4e5d5767-36af-466c-8657-56a8bc5318ba.jpeg)
+![](/writing/taskaro-a-task-prioritization-android-app/01.jpg)
 
-![](https://cdn.hashnode.com/res/hashnode/image/upload/v1685345404108/a1d13a25-b94a-4b6e-85b0-c3642f071bc5.jpeg)
+![](/writing/taskaro-a-task-prioritization-android-app/02.jpg)
 
 Upon successful login, users can explore every section of the app through the bottom navigation bar. The bar comprises the home screen, notes screen, and user profile screen.
 
-![](https://cdn.hashnode.com/res/hashnode/image/upload/v1685343379988/1efdc09d-5c06-4f39-9674-a0ec316aca95.jpeg)
+![](/writing/taskaro-a-task-prioritization-android-app/03.jpg)
 
 The bottom navbar also includes a floating action button. Clicking it on the home screen creates a new task, while on the notes screen, it creates a new note.
 
-![](https://cdn.hashnode.com/res/hashnode/image/upload/v1685345409889/673d7901-0098-4829-a481-124d46824e42.jpeg)
+![](/writing/taskaro-a-task-prioritization-android-app/04.jpg)
 
 The home screen organizes tasks into different sections, each colour-coded for easier browsing and workflow.
 
-![](https://cdn.hashnode.com/res/hashnode/image/upload/v1685345414613/0f902998-f365-4255-a292-1a6bed08081e.jpeg)
+![](/writing/taskaro-a-task-prioritization-android-app/05.jpg)
 
 The notes and user profile screens consist of a minimalistic and soothing appearance.
 
-![](https://cdn.hashnode.com/res/hashnode/image/upload/v1685345417289/fabbb2b1-c0ee-469e-b952-e1dbb1499d4f.jpeg)
+![](/writing/taskaro-a-task-prioritization-android-app/06.jpg)
 
 Taskaro incorporates [Material 3](https://m3.material.io/) design components, utilizes the [Inter](https://fonts.google.com/specimen/Inter?query=inter) font family, and maintains a side margin of 20dp throughout the app.
 
