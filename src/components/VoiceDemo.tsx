@@ -16,10 +16,35 @@ type Account = {
 	orders: { id: string; symbol: string; side: string; qty: number; status: string }[];
 	pendingPreviewId?: string | null;
 };
-type Turn = { events: AgentEvent[]; provider: string; model?: string; limited?: boolean };
+type Turn = { events: AgentEvent[]; provider: string; model?: string; limited?: boolean; fallback?: boolean };
 
 const STORE = "voice-demo-v1";
-const TRY = ["Buy 10 Reliance", "Price of Infosys", "How much cash do I have?", "Show my portfolio"];
+type Lang = "en" | "hi";
+// A made-up company in the sample tip, so the demo never spreads a rumour about a real one.
+const TRY: Record<Lang, { label: string; say: string }[]> = {
+	en: [
+		{ label: "Buy 10 Reliance", say: "Buy 10 Reliance" },
+		{ label: "Price of Infosys", say: "Price of Infosys" },
+		{ label: "News on Tata Motors", say: "News on Tata Motors" },
+		{
+			label: "Check a forwarded tip",
+			say: "Check this tip: ABC Infra is a multibagger, target 500 in 2 days, 100% sure. Join our VIP Telegram group before it's too late.",
+		},
+		{ label: "Show my portfolio", say: "Show my portfolio" },
+	],
+	hi: [
+		{ label: "10 रिलायंस खरीदो", say: "10 रिलायंस खरीदो" },
+		{ label: "इंफोसिस का भाव", say: "इंफोसिस का भाव बताओ" },
+		{ label: "टाटा मोटर्स की खबर", say: "टाटा मोटर्स की खबर" },
+		{
+			label: "यह टिप जाँचो",
+			say: "यह टिप जाँचो: ABC इंफ्रा मल्टीबैगर है, 2 दिन में 500 का टारगेट, 100% पक्का। जल्दी हमारे VIP टेलीग्राम ग्रुप से जुड़ो।",
+		},
+		{ label: "मेरा पोर्टफोलियो", say: "मेरा पोर्टफोलियो दिखाओ" },
+	],
+};
+const CONFIRM: Record<Lang, string[]> = { en: ["Yes", "No"], hi: ["हाँ", "नहीं"] };
+const DEVANAGARI = /[\u0900-\u097F]/;
 const rupees = new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 });
 
 // The browser's own speech recognition: Chrome, Edge and Safari have it, Firefox doesn't.
@@ -39,12 +64,16 @@ function makeRecognition(): Recognition | null {
 	return Ctor ? new Ctor() : null;
 }
 
-function speak(text: string) {
+function speak(text: string, lang: Lang) {
 	if (!("speechSynthesis" in window)) return;
 	window.speechSynthesis.cancel();
 	const u = new SpeechSynthesisUtterance(text);
+	const hindi = lang === "hi" || DEVANAGARI.test(text);
+	u.lang = hindi ? "hi-IN" : "en-IN";
 	const voices = window.speechSynthesis.getVoices();
-	const voice = voices.find((v) => v.lang === "en-IN") ?? voices.find((v) => v.lang.startsWith("en"));
+	const voice = hindi
+		? voices.find((v) => v.lang === "hi-IN")
+		: (voices.find((v) => v.lang === "en-IN") ?? voices.find((v) => v.lang.startsWith("en")));
 	if (voice) u.voice = voice;
 	u.rate = 1.04;
 	window.speechSynthesis.speak(u);
@@ -54,6 +83,12 @@ function speak(text: string) {
 function describe(result: unknown): string {
 	const r = (result ?? {}) as Record<string, any>;
 	if (r.error) return r.error.message ?? "error";
+	if (r.unavailable) return "news is unavailable right now";
+	if (Array.isArray(r.items)) {
+		const flagged = r.items.filter((i: any) => i.flags?.length).length;
+		return `${r.items.length} headline${r.items.length === 1 ? "" : "s"}${flagged ? `, ${flagged} with hype language` : ""}`;
+	}
+	if (r.risk) return `risk ${r.risk} · ${r.flags?.length ?? 0} warning sign${r.flags?.length === 1 ? "" : "s"}`;
 	if (r.summary) return r.summary;
 	if (r.quote) return `${r.quote.symbol} ${rupees.format(r.quote.ltp)} (${r.quote.changePct >= 0 ? "+" : ""}${Number(r.quote.changePct).toFixed(2)}%)`;
 	if (r.order) return `${r.order.id} ${r.order.side} ${r.order.qty} ${r.order.symbol}: ${String(r.order.status).toLowerCase()}`;
@@ -84,6 +119,7 @@ export function VoiceDemo() {
 	const [listening, setListening] = useState(false);
 	const [canListen, setCanListen] = useState(false);
 	const [voice, setVoice] = useState(true);
+	const [lang, setLang] = useState<Lang>("en");
 	const [problem, setProblem] = useState("");
 	const recognition = useRef<Recognition | null>(null);
 	const log = useRef<HTMLOListElement>(null);
@@ -94,16 +130,17 @@ export function VoiceDemo() {
 			const saved = JSON.parse(localStorage.getItem(STORE) ?? "null");
 			if (saved?.messages) setMessages(saved.messages);
 			if (saved?.account) setAccount(saved.account);
+			if (saved?.lang === "hi") setLang("hi");
 		} catch {}
 		return () => recognition.current?.stop();
 	}, []);
 
 	useEffect(() => {
 		try {
-			localStorage.setItem(STORE, JSON.stringify({ messages: messages.slice(-24), account }));
+			localStorage.setItem(STORE, JSON.stringify({ messages: messages.slice(-24), account, lang }));
 		} catch {}
 		log.current?.scrollTo({ top: log.current.scrollHeight, behavior: "smooth" });
-	}, [messages, account]);
+	}, [messages, account, lang]);
 
 	const send = useCallback(
 		async (text: string) => {
@@ -119,21 +156,21 @@ export function VoiceDemo() {
 				const res = await fetch("/api/agent", {
 					method: "POST",
 					headers: { "content-type": "application/json" },
-					body: JSON.stringify({ messages: next, state: account }),
+					body: JSON.stringify({ messages: next, state: account, language: lang }),
 				});
 				const data = await res.json();
 				if (!res.ok) throw new Error(data.error ?? "The agent didn't answer.");
 				setMessages(data.messages);
 				setAccount(data.state);
-				setTurn({ events: data.events, provider: data.provider, model: data.model, limited: data.limited });
-				if (voice) speak(data.reply);
+				setTurn({ events: data.events, provider: data.provider, model: data.model, limited: data.limited, fallback: data.fallback });
+				if (voice) speak(data.reply, lang);
 			} catch (e) {
 				setProblem((e as Error).message || "The agent didn't answer. Try again.");
 			} finally {
 				setBusy(false);
 			}
 		},
-		[account, busy, messages, voice],
+		[account, busy, messages, voice, lang],
 	);
 
 	function listen() {
@@ -144,7 +181,7 @@ export function VoiceDemo() {
 		const r = makeRecognition();
 		if (!r) return;
 		window.speechSynthesis?.cancel();
-		r.lang = "en-IN";
+		r.lang = lang === "hi" ? "hi-IN" : "en-IN";
 		r.interimResults = true;
 		r.continuous = false;
 		let final = "";
@@ -188,7 +225,23 @@ export function VoiceDemo() {
 				<h2 id="try-h" className="font-display text-3xl leading-none font-black uppercase sm:text-4xl">
 					Try the rebuild
 				</h2>
-				<p className="catalogue text-ink-mute">Simulated prices · paper account · no real money</p>
+				<div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+					<p className="catalogue text-ink-mute">Simulated prices · paper account · no real money</p>
+					<div role="group" aria-label="Language" className="flex border-2 border-ink">
+						{(["en", "hi"] as const).map((l) => (
+							<button
+								key={l}
+								type="button"
+								aria-pressed={lang === l}
+								onClick={() => setLang(l)}
+								lang={l === "hi" ? "hi" : undefined}
+								className={`px-2.5 py-0.5 text-sm font-semibold ${l === "hi" ? "font-deva" : ""} ${lang === l ? "bg-ink text-paper" : "hover:bg-paper"}`}
+							>
+								{l === "en" ? "English" : "हिंदी"}
+							</button>
+						))}
+					</div>
+				</div>
 			</header>
 
 			<div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
@@ -197,14 +250,20 @@ export function VoiceDemo() {
 					<ol ref={log} aria-live="polite" className="max-h-[22rem] flex-1 space-y-3 overflow-y-auto px-5 py-5 sm:px-7">
 						{messages.length === 0 && (
 							<li className="max-w-[46ch] text-ink-soft">
-								Ask for a quote, place an order or check your holdings. The agent reads every order back and waits for your yes before it
-								places anything.
+								{lang === "hi" ? (
+									<span lang="hi" className="font-deva">
+										भाव पूछिए, ऑर्डर लगाइए, किसी शेयर की खबरें सुनिए या कोई फ़ॉरवर्ड की गई टिप जाँचिए। हर ऑर्डर पहले पढ़कर सुनाया जाता है और आपकी हाँ के बाद ही लगता है।
+									</span>
+								) : (
+									"Ask for a quote, place an order, hear the news on a stock or check a forwarded tip. The agent reads every order back and waits for your yes before it places anything."
+								)}
 							</li>
 						)}
 						{messages.map((m, i) => (
 							<li key={`${i}-${m.content.slice(0, 12)}`} className={m.role === "user" ? "flex justify-end" : "flex"}>
 								<p
-									className={`max-w-[85%] px-3.5 py-2 leading-snug [animation:pop-in_400ms_var(--ease-out-expo)_both] ${
+									lang={DEVANAGARI.test(m.content) ? "hi" : undefined}
+									className={`max-w-[85%] px-3.5 py-2 leading-snug [animation:pop-in_400ms_var(--ease-out-expo)_both] ${DEVANAGARI.test(m.content) ? "font-deva" : ""} ${
 										m.role === "user" ? "bg-ink text-paper" : "border-2 border-plum bg-paper text-ink"
 									}`}
 								>
@@ -259,8 +318,18 @@ export function VoiceDemo() {
 								onChange={(e) => setDraft(e.target.value)}
 								maxLength={300}
 								autoComplete="off"
-								placeholder={waiting ? "Say yes to place it, or no" : canListen ? "Or type: buy 10 Reliance" : "Type: buy 10 Reliance"}
-								className="h-12 min-w-0 flex-1 border-2 border-ink bg-paper px-3 placeholder:text-ink-mute focus:outline-none focus-visible:border-plum"
+								placeholder={
+									lang === "hi"
+										? waiting
+											? "हाँ या नहीं"
+											: "या लिखिए: 10 रिलायंस खरीदो"
+										: waiting
+											? "Say yes to place it, or no"
+											: canListen
+												? "Or type: buy 10 Reliance"
+												: "Type: buy 10 Reliance"
+								}
+								className={`h-12 min-w-0 flex-1 border-2 border-ink bg-paper px-3 placeholder:text-ink-mute focus:outline-none focus-visible:border-plum ${lang === "hi" ? "font-deva" : ""}`}
 							/>
 							<button
 								type="submit"
@@ -272,15 +341,16 @@ export function VoiceDemo() {
 							</button>
 						</form>
 						<div className="mt-3 flex flex-wrap items-center gap-2">
-							{(waiting ? ["Yes", "No"] : TRY).map((t) => (
+							{(waiting ? CONFIRM[lang].map((t) => ({ label: t, say: t })) : TRY[lang]).map((t) => (
 								<button
-									key={t}
+									key={t.label}
 									type="button"
 									disabled={busy}
-									onClick={() => send(t)}
-									className="border border-ink px-2.5 py-1 text-sm font-semibold transition-colors hover:bg-ink hover:text-paper disabled:opacity-40"
+									onClick={() => send(t.say)}
+									lang={lang === "hi" ? "hi" : undefined}
+									className={`border border-ink px-2.5 py-1 text-sm font-semibold transition-colors hover:bg-ink hover:text-paper disabled:opacity-40 ${lang === "hi" ? "font-deva" : ""}`}
 								>
-									{t}
+									{t.label}
 								</button>
 							))}
 						</div>
@@ -297,6 +367,7 @@ export function VoiceDemo() {
 								<span className="catalogue text-plum" title={turn.model}>
 									{PROVIDER[turn.provider] ?? turn.provider}
 									{turn.limited && " · demo limit reached"}
+									{turn.fallback && " · AI busy, answered offline"}
 								</span>
 							)}
 						</div>
@@ -314,7 +385,25 @@ export function VoiceDemo() {
 												<span className="text-ink-mute">({args(e.args)})</span>
 											</span>
 										) : (
-											<span className={e.isError ? "text-post" : "text-ink-soft"}>← {describe(e.result)}</span>
+											<>
+												<span className={e.isError ? "text-post" : "text-ink-soft"}>← {describe(e.result)}</span>
+												{Array.isArray((e.result as any)?.items) && (
+													<ul className="mt-1 mb-2 space-y-1 border-l-2 border-rule pl-3 font-sans text-[13px]">
+														{(e.result as any).items.slice(0, 4).map((n: any) => (
+															<li key={n.link ?? n.title}>
+																<a href={n.link} target="_blank" rel="noopener noreferrer nofollow" className="text-ink no-underline hover:underline">
+																	{n.title}
+																</a>
+																<span className="text-ink-mute">
+																	{" "}
+																	· {n.source}
+																	{n.flags?.length ? " · hype" : ""}
+																</span>
+															</li>
+														))}
+													</ul>
+												)}
+											</>
 										)}
 									</li>
 								))}

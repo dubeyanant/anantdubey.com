@@ -37,7 +37,7 @@ function readMessages(raw: unknown): ChatMessage[] | null {
 }
 
 export async function POST(request: Request) {
-	let body: { messages?: unknown; state?: unknown };
+	let body: { messages?: unknown; state?: unknown; language?: unknown };
 	try {
 		body = await request.json();
 	} catch {
@@ -59,14 +59,13 @@ export async function POST(request: Request) {
 			messages,
 			state: body.state ?? null,
 			provider: limited ? "rules" : undefined,
+			// Hindi when the visitor picks it; otherwise the package still switches to Hindi for Devanagari input.
+			language: body.language === "hi" ? "hi" : undefined,
 		});
-		// A failed model call is answered by the offline parser; log why, and tell the client it fell back.
+		// A failed model call is answered by the offline parser; log why (Vercel logs), and tell the client it fell back.
 		if (turn.error) console.error("agent model call failed:", turn.error);
 		return Response.json({
 			fallback: Boolean(turn.error),
-			// TEMP: diagnose the first live model call; remove once it works.
-			reason: turn.error?.replace(/(sk-|AIza)[\w-]+/g, "[key]").slice(0, 300),
-			keyed: hasKey,
 			reply: turn.reply,
 			events: turn.events,
 			state: turn.state,

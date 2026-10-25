@@ -180,6 +180,8 @@ export const caseStudies: CaseStudy[] = [
 				body: [
 					"The Ideathon version was internal, so I rebuilt the idea from scratch in the open. Your browser turns speech into text. An agent on this site reads it and calls tools on an MCP server, which runs a paper trading account with simulated prices. The reply is read back aloud.",
 					"Every order is previewed and read back first, and nothing is placed until you say yes. The server only accepts an order that came from a preview, so the model can't place a trade you never heard.",
+					"It also reads the news. Ask about a stock and it summarises this week's real headlines, keeping what was reported apart from the hype. Paste a tip from a WhatsApp or Telegram group and it points out the signs of a pump-and-dump: guaranteed returns, short-term targets, urgency, paid groups.",
+					"It works in Hindi as well as English, by voice or by typing.",
 					"The MCP server is open source. It also works with Claude Desktop or any other MCP client.",
 				],
 			},
