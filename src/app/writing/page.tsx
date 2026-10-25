@@ -26,7 +26,7 @@ export default function WritingIndex() {
 					</p>
 					<ol className="mt-12 border-t-2 border-inland-ink">
 						{posts.map((p) => (
-							<li key={p.slug} className="reveal border-b border-inland-ink/40">
+							<li key={p.slug} data-reveal className="border-b border-inland-ink/40">
 								<Link href={`/writing/${p.slug}`} className="group grid gap-2 py-7 no-underline sm:grid-cols-[10rem_1fr] sm:gap-8">
 									<p className="catalogue">{formatDate(p.date)}</p>
 									<div>

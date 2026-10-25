@@ -1,20 +1,24 @@
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import { Postcard, TaleCard, VerseSlip } from "@/components/AfterHours";
 import { PostBox, Selvedge } from "@/components/Chrome";
+import { Mask } from "@/components/Mask";
 import { Arrowed, StampFace, inkClass } from "@/components/Stamp";
 import { StampLink } from "@/components/StampLink";
+import { TransitionLink } from "@/components/Transition";
 import { album, caseStudies, experience, sheet, site, skills } from "@/data/site";
 import { formatDate, list } from "@/lib/content";
 
 const ALBUM_FORMATS = ["lg:col-span-2 lg:row-span-2", "lg:col-span-2", "lg:col-span-2", "lg:col-span-4", "lg:col-span-3", "lg:col-span-3"];
 
+/** A stamp that opens a case study floods the screen with that study's ink on the way there. */
+function coverFor(href: string) {
+	const c = caseStudies.find((x) => `/work/${x.slug}` === href);
+	return c && { title: c.title, color: `var(--color-${c.ink})` };
+}
+
 export default function Home() {
 	const [fno, ...singles] = sheet;
 	const posts = list("writing").slice(0, 4);
-	const [log] = list("logs");
-	const [tale] = list("tales");
-	const [verse] = list("verses");
 
 	// Shown beside the name on desktop, and after the coil of stamps on phones so the work leads.
 	const ctas = (
@@ -70,7 +74,7 @@ export default function Home() {
 						<section aria-label="Selected work, as a sheet of stamps" className="min-w-0">
 							<ul className="-mx-5 flex snap-x snap-mandatory scroll-px-5 gap-5 overflow-x-auto px-5 pt-2 pb-4 sm:-mx-10 sm:px-10 lg:mx-0 lg:grid lg:grid-cols-3 lg:grid-rows-[repeat(3,minmax(13rem,1fr))] lg:gap-6 lg:overflow-visible lg:p-0">
 								<li className="w-[85vw] max-w-sm shrink-0 snap-start lg:col-span-2 lg:row-span-2 lg:w-auto lg:max-w-none">
-									<StampLink slug={fno.slug} href={fno.href} label={`${fno.denomination} ${fno.caption}`} postmark={fno.postmark} order={0} className="h-full">
+									<StampLink slug={fno.slug} href={fno.href} label={`${fno.denomination} ${fno.caption}`} cover={coverFor(fno.href)} postmark={fno.postmark} order={0} className="h-full">
 										<div className="h-[21rem] lg:h-full">
 											<StampFace stamp={fno} size="hero" />
 										</div>
@@ -78,7 +82,7 @@ export default function Home() {
 								</li>
 								{singles.map((s, i) => (
 									<li key={s.slug} className="w-[70vw] max-w-72 shrink-0 snap-start lg:w-auto lg:max-w-none">
-										<StampLink slug={s.slug} href={s.href} label={`${s.denomination}: ${s.caption}`} order={i + 1} className="h-full">
+										<StampLink slug={s.slug} href={s.href} label={`${s.denomination}: ${s.caption}`} cover={coverFor(s.href)} order={i + 1} className="h-full">
 											<div className="h-[17rem] lg:h-full">
 												<StampFace stamp={s} />
 											</div>
@@ -98,15 +102,19 @@ export default function Home() {
 			<main id="main">
 				{/* Four in detail. */}
 				<section id="work" className="mx-auto max-w-6xl px-5 pt-20 pb-16 sm:px-10 sm:pt-28">
-					<h2 className="font-display text-[clamp(3rem,7vw,5.5rem)] leading-[0.88] font-black uppercase">The work</h2>
-					<p className="mt-4 max-w-[52ch] text-lg text-ink-soft">
+					<h2 data-reveal="mask" className="font-display text-[clamp(3rem,7vw,5.5rem)] leading-[0.88] font-black uppercase">
+						<Mask>The work</Mask>
+					</h2>
+					<p data-reveal className="mt-4 max-w-[52ch] text-lg text-ink-soft">
 						Four projects in detail. The rest are in the album below.
 					</p>
 					<ol className="mt-12">
 						{caseStudies.map((c) => (
-							<li key={c.slug} className="reveal border-t-2 border-ink">
-								<Link
+							<li key={c.slug} data-reveal className="border-t-2 border-ink">
+								<TransitionLink
 									href={`/work/${c.slug}`}
+									title={c.title}
+									color={`var(--color-${c.ink})`}
 									className="group grid gap-x-10 gap-y-3 py-8 no-underline sm:grid-cols-[1fr_auto] sm:py-10"
 								>
 									<div>
@@ -121,7 +129,7 @@ export default function Home() {
 									>
 										<Arrowed value={c.denomination} />
 									</p>
-								</Link>
+								</TransitionLink>
 							</li>
 						))}
 					</ol>
@@ -130,8 +138,10 @@ export default function Home() {
 				{/* The album: everything else, mounted as stamps of mixed formats on a dark stockbook leaf. */}
 				<section id="album" className="bg-leaf text-paper">
 					<div className="mx-auto max-w-6xl px-5 py-20 sm:px-10 sm:py-24">
-						<h2 className="font-display text-[clamp(3rem,7vw,5.5rem)] leading-[0.88] font-black uppercase">The album</h2>
-						<p className="mt-4 max-w-[52ch] text-lg text-paper-shade">My side projects and hackathon builds.</p>
+						<h2 data-reveal="mask" className="font-display text-[clamp(3rem,7vw,5.5rem)] leading-[0.88] font-black uppercase">
+						<Mask>The album</Mask>
+					</h2>
+						<p data-reveal className="mt-4 max-w-[52ch] text-lg text-paper-shade">My side projects and hackathon builds.</p>
 						<ul className="mt-12 grid grid-flow-dense gap-7 sm:grid-cols-2 lg:grid-cols-6">
 							{album.map((a, i) => {
 								// Formats vary like a real issue: a tall lead, a wide commemorative, two hackathon halves.
@@ -158,7 +168,7 @@ export default function Home() {
 								const paper = "perforated block h-full p-2.5";
 								const hole = { "--hole": "var(--color-leaf)" } as React.CSSProperties;
 								return (
-									<li key={a.title} className={`reveal ${format}`}>
+									<li key={a.title} data-reveal className={format}>
 										{a.href ? (
 											<a
 												href={a.href}
@@ -181,13 +191,15 @@ export default function Home() {
 
 				{/* The route: where the stamps were issued. */}
 				<section id="experience" className="mx-auto max-w-6xl px-5 py-20 sm:px-10 sm:py-28">
-					<h2 className="font-display text-[clamp(3rem,7vw,5.5rem)] leading-[0.88] font-black uppercase">Experience</h2>
-					<p className="mt-4 max-w-[52ch] text-lg text-ink-soft">
+					<h2 data-reveal="mask" className="font-display text-[clamp(3rem,7vw,5.5rem)] leading-[0.88] font-black uppercase">
+						<Mask>Experience</Mask>
+					</h2>
+					<p data-reveal className="mt-4 max-w-[52ch] text-lg text-ink-soft">
 						I've worked on Sharekhan's trading app since 2024 and was promoted within two years.
 					</p>
 					<ol className="mt-12">
 						{experience.map((e) => (
-							<li key={e.role} className="grid gap-2 border-t border-rule py-6 sm:grid-cols-[9rem_1fr] sm:gap-8">
+							<li key={e.role} data-reveal className="grid gap-2 border-t border-rule py-6 sm:grid-cols-[9rem_1fr] sm:gap-8">
 								<p className="catalogue text-ink-mute">{e.years}</p>
 								<div>
 									<h3 className="text-xl font-bold">
@@ -198,7 +210,7 @@ export default function Home() {
 							</li>
 						))}
 					</ol>
-					<dl className="mt-12 grid gap-x-10 gap-y-6 border-t-2 border-ink pt-8 sm:grid-cols-2">
+					<dl data-reveal className="mt-12 grid gap-x-10 gap-y-6 border-t-2 border-ink pt-8 sm:grid-cols-2">
 						{skills.map(([k, v]) => (
 							<div key={k}>
 								<dt className="catalogue text-post">{k}</dt>
@@ -212,7 +224,9 @@ export default function Home() {
 				<section id="writing" className="bg-inland text-inland-ink">
 					<div className="mx-auto max-w-6xl px-5 py-20 sm:px-10 sm:py-24">
 						<div className="flex flex-wrap items-end justify-between gap-6">
-							<h2 className="font-display text-[clamp(3rem,7vw,5.5rem)] leading-[0.88] font-black uppercase">Writing</h2>
+							<h2 data-reveal="mask" className="font-display text-[clamp(3rem,7vw,5.5rem)] leading-[0.88] font-black uppercase">
+						<Mask>Writing</Mask>
+					</h2>
 							<Link href="/writing" className="inline-flex items-center gap-2 py-2 font-bold text-inland-ink">
 								All posts
 								<ArrowRight className="size-4" aria-hidden="true" />
@@ -220,7 +234,7 @@ export default function Home() {
 						</div>
 						<ul className="mt-10 grid gap-5 md:grid-cols-2">
 							{posts.map((p) => (
-								<li key={p.slug} className="reveal">
+								<li key={p.slug} data-reveal>
 									<Link
 										href={`/writing/${p.slug}`}
 										className="group flex h-full flex-col gap-3 border-2 border-inland-ink bg-inland-card p-6 no-underline transition-transform duration-500 ease-out-expo hover:-translate-y-1"
@@ -235,29 +249,13 @@ export default function Home() {
 							))}
 						</ul>
 
-						<div className="mt-16 border-t-2 border-inland-ink pt-10">
-							<div className="flex flex-wrap items-end justify-between gap-6">
-								<div>
-									<h3 className="font-display text-4xl leading-none font-black uppercase">After hours</h3>
-									<p className="mt-3 max-w-[56ch]">I also write logs about my days, short fiction, and poems in Hindi and English.</p>
-								</div>
-								<Link href="/after-hours" className="inline-flex items-center gap-2 py-2 font-bold text-inland-ink">
-									Read them all
-									<ArrowRight className="size-4" aria-hidden="true" />
-								</Link>
-							</div>
-							<ul className="mt-8 grid items-start gap-6 md:grid-cols-3">
-								<li className="reveal">
-									<Postcard entry={log} number={list("logs").length} />
-								</li>
-								<li className="reveal">
-									<TaleCard entry={tale} />
-								</li>
-								<li className="reveal">
-									<VerseSlip entry={verse} tilt={-1} />
-								</li>
-							</ul>
-						</div>
+						<p data-reveal className="mt-14 border-t border-inland-ink/40 pt-6 text-[15px]">
+							Not everything I write is about code.{" "}
+							<Link href="/after-hours" className="font-bold text-inland-ink">
+								After hours
+							</Link>
+							.
+						</p>
 					</div>
 				</section>
 			</main>

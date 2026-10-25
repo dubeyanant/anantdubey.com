@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Anek_Devanagari, Anek_Latin, Big_Shoulders } from "next/font/google";
+import { TransitionProvider } from "@/components/Transition";
 import { site } from "@/data/site";
 import "./globals.css";
 
@@ -20,9 +21,16 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = { themeColor: "#c8211b" };
 
+// Runs before first paint: hide reveal targets only when motion is welcome, and give them back if the app never starts.
+const revealBoot = `(function(){var d=document.documentElement;if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;d.classList.add("reveal-ready");setTimeout(function(){if(!d.classList.contains("reveal-live"))d.classList.remove("reveal-ready")},3000)})()`;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
 	return (
-		<html lang="en" className={`${bigShoulders.variable} ${anek.variable} ${anekDeva.variable}`}>
+		<html lang="en" className={`${bigShoulders.variable} ${anek.variable} ${anekDeva.variable}`} suppressHydrationWarning>
+			<head>
+				{/* biome-ignore lint/security/noDangerouslySetInnerHtml: a fixed boot snippet, no user input */}
+				<script dangerouslySetInnerHTML={{ __html: revealBoot }} />
+			</head>
 			<body className="min-h-dvh bg-paper text-ink">
 				<a
 					href="#main"
@@ -30,7 +38,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
 				>
 					Skip to content
 				</a>
-				{children}
+				<TransitionProvider>{children}</TransitionProvider>
 			</body>
 		</html>
 	);

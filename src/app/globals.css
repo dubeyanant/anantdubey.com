@@ -126,20 +126,6 @@
 		transform: none;
 	}
 }
-/* Torn off the sheet: a short peel, then away up and to the right. */
-@keyframes tear-off {
-	0% {
-		transform: none;
-	}
-	28% {
-		transform: translateY(-14px) rotate(-3deg);
-		filter: drop-shadow(0 18px 18px rgba(22, 18, 15, 0.35));
-	}
-	100% {
-		transform: translate(14vw, -115vh) rotate(-26deg);
-		filter: drop-shadow(0 40px 30px rgba(22, 18, 15, 0.25));
-	}
-}
 /* Arriving in its mount on the case-study page. */
 @keyframes land {
 	0% {
@@ -324,13 +310,136 @@
 	line-height: 1.8;
 }
 
-/* Sections print in as they scroll into view, where the browser supports scroll timelines. */
-@media (prefers-reduced-motion: no-preference) {
-	@supports (animation-timeline: view()) {
-		.reveal {
-			animation: print-in linear both;
-			animation-timeline: view();
-			animation-range: entry 0% entry 70%;
-		}
+/* The crack runs down the stamp: its torn edge is uncovered from the top. */
+@keyframes tear-run {
+	from {
+		clip-path: inset(0 0 100% 0);
+	}
+	to {
+		clip-path: inset(0 0 -2% 0);
+	}
+}
+
+/* Page transition: the torn stamp's ink floods up over the page, the next page arrives, the ink lifts off the top. */
+.page-cover {
+	position: fixed;
+	inset: 0;
+	z-index: 60;
+	display: grid;
+	place-items: center;
+	padding: 1.25rem;
+	color: var(--color-paper);
+	clip-path: inset(100% 0 0 0);
+	pointer-events: none;
+}
+.page-cover[data-phase="in"] {
+	animation: cover-in 520ms cubic-bezier(0.76, 0, 0.24, 1) forwards;
+	pointer-events: auto;
+}
+.page-cover[data-phase="hold"] {
+	clip-path: inset(0);
+	pointer-events: auto;
+}
+.page-cover[data-phase="out"] {
+	animation: cover-out 760ms cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+.page-cover-title {
+	overflow: hidden;
+	font-family: var(--font-display);
+	font-weight: 900;
+	font-size: clamp(3rem, 10vw, 8.5rem);
+	line-height: 0.9;
+	text-transform: uppercase;
+	text-align: center;
+}
+.page-cover-title > span {
+	display: block;
+	transform: translateY(105%);
+}
+.page-cover[data-phase="in"] .page-cover-title > span {
+	animation: cover-title-in 620ms var(--ease-out-expo) 160ms forwards;
+}
+.page-cover[data-phase="hold"] .page-cover-title > span {
+	transform: none;
+}
+.page-cover[data-phase="out"] .page-cover-title > span {
+	animation: cover-title-out 520ms cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+@keyframes cover-in {
+	from {
+		clip-path: inset(100% 0 0 0);
+	}
+	to {
+		clip-path: inset(0);
+	}
+}
+@keyframes cover-out {
+	from {
+		clip-path: inset(0);
+	}
+	to {
+		clip-path: inset(0 0 100% 0);
+	}
+}
+@keyframes cover-title-in {
+	from {
+		transform: translateY(105%);
+	}
+	to {
+		transform: none;
+	}
+}
+@keyframes cover-title-out {
+	from {
+		transform: none;
+	}
+	to {
+		transform: translateY(-105%);
+	}
+}
+
+/*
+ * Section reveals, once, as each block enters. `reveal-ready` is set before first paint
+ * (only when motion is welcome), so nothing flashes; without JS nothing is ever hidden.
+ * Headings rise out of a mask; blocks wipe up from their bottom edge while settling.
+ */
+.mask-line {
+	display: block;
+	overflow: hidden;
+	padding-block: 0.08em;
+	margin-block: -0.08em;
+}
+.mask-line > span {
+	display: block;
+}
+.reveal-ready [data-reveal="mask"] .mask-line > span {
+	transform: translateY(110%) rotate(2.5deg);
+	transform-origin: left bottom;
+	transition: transform 1100ms var(--ease-out-expo) var(--reveal-delay, 0ms);
+}
+.reveal-ready [data-reveal="mask"].is-in .mask-line > span {
+	transform: none;
+}
+.reveal-ready [data-reveal]:not([data-reveal="mask"]) {
+	opacity: 0;
+}
+/* Only the visibility observer's target stays unclipped; the wipe itself runs as an animation once it is seen. */
+.reveal-ready [data-reveal]:not([data-reveal="mask"]).is-in {
+	opacity: 1;
+	animation: reveal-up 1100ms var(--ease-out-expo) var(--reveal-delay, 0ms) backwards;
+}
+@keyframes reveal-up {
+	from {
+		opacity: 0;
+		transform: translateY(56px);
+		clip-path: inset(100% -40px -40px -40px);
+	}
+	35% {
+		opacity: 1;
+	}
+	to {
+		opacity: 1;
+		transform: none;
+		clip-path: inset(-40px);
 	}
 }

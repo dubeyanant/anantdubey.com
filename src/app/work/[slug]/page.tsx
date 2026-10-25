@@ -3,7 +3,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PaperHeader, PostBox } from "@/components/Chrome";
+import { Mask } from "@/components/Mask";
 import { Arrowed, inkClass } from "@/components/Stamp";
+import { TransitionLink } from "@/components/Transition";
 import { FnoVignette, VoiceVignette } from "@/components/Vignettes";
 import { caseStudies } from "@/data/site";
 
@@ -35,17 +37,19 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
 
 				<div className="mt-8 grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
 					<div>
-						<h1 className="font-display text-[clamp(3.2rem,8vw,6rem)] leading-[0.88] font-black uppercase">{c.title}</h1>
-						<p className="mt-6 max-w-[48ch] text-xl leading-relaxed text-ink-soft">{c.summary}</p>
+						<h1 data-reveal="mask" className="font-display text-[clamp(3.2rem,8vw,6rem)] leading-[0.88] font-black uppercase">
+							<Mask>{c.title}</Mask>
+						</h1>
+						<p data-reveal className="mt-6 max-w-[48ch] text-xl leading-relaxed text-ink-soft">{c.summary}</p>
 						<p className="mt-4 catalogue text-ink-mute uppercase tabular-nums">{c.year} · {c.role}</p>
 					</div>
 					{/* The case study's own stamp, at single size. */}
 					<div className="w-fit shrink-0 bg-post p-5">
-						<div className={`perforated w-52 p-3 [animation:land_900ms_var(--ease-out-expo)_150ms_both] ${inkClass[c.ink]}`}>
+						<div className={`perforated w-52 p-3 [animation:land_900ms_var(--ease-out-expo)_calc(var(--arrive,0ms)+150ms)_both] ${inkClass[c.ink]}`}>
 							<div className="flex aspect-[4/5] flex-col justify-between border-2 border-current p-3">
 								<span className="catalogue">भारत · {c.year}</span>
 								{c.slug === "one-click-fno" && (
-									<div className="my-3 min-h-0 flex-1">
+									<div className="my-3 min-h-0 flex-1 [&>div]:min-h-0">
 										<FnoVignette />
 									</div>
 								)}
@@ -58,7 +62,7 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
 					</div>
 				</div>
 
-				<dl className="mt-12 flex flex-wrap gap-x-10 gap-y-3 border-y border-rule py-5">
+				<dl data-reveal className="mt-12 flex flex-wrap gap-x-10 gap-y-3 border-y border-rule py-5">
 					<div>
 						<dt className="catalogue text-ink-mute uppercase">Stack</dt>
 						<dd className="mt-1 font-semibold">{c.stack.join(", ")}</dd>
@@ -78,7 +82,7 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
 
 				<article className="prose-letter mt-4">
 					{c.sections.map((s) => (
-						<section key={s.heading}>
+						<section key={s.heading} data-reveal>
 							<h2>{s.heading}</h2>
 							{s.body.map((p) => (
 								<p key={p.slice(0, 40)}>{p}</p>
@@ -88,8 +92,10 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
 					{c.note && <p className="border-t border-rule pt-5 text-base text-ink-mute italic">{c.note}</p>}
 				</article>
 
-				<Link
+				<TransitionLink
 					href={`/work/${next.slug}`}
+					title={next.title}
+					color={`var(--color-${next.ink})`}
 					className="group mt-20 flex items-center justify-between gap-6 border-t-2 border-ink pt-8 no-underline"
 				>
 					<span>
@@ -97,7 +103,7 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
 						<span className="mt-1 block text-2xl font-bold group-hover:underline">{next.title}</span>
 					</span>
 					<ArrowRight className="size-7 shrink-0 transition-transform duration-500 ease-out-expo group-hover:translate-x-1" aria-hidden="true" />
-				</Link>
+				</TransitionLink>
 			</main>
 			<PostBox />
 		</>
