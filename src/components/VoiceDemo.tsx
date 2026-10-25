@@ -1,0 +1,372 @@
+"use client";
+
+import { Mic, RotateCcw, Send, Square, Volume2, VolumeX } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+
+/* The rebuild of the Ideathon idea, live: speech in the browser, the agent and its MCP tools on /api/agent,
+   a paper account that lives in this visitor's browser, and the reply read back aloud. */
+
+type Message = { role: "user" | "assistant"; content: string };
+type AgentEvent =
+	| { type: "tool_call"; name: string; args: Record<string, unknown> }
+	| { type: "tool_result"; name: string; result: unknown; isError: boolean };
+type Account = {
+	cash: number;
+	positions: Record<string, { qty: number; avgPrice: number }>;
+	orders: { id: string; symbol: string; side: string; qty: number; status: string }[];
+	pendingPreviewId?: string | null;
+};
+type Turn = { events: AgentEvent[]; provider: string; model?: string; limited?: boolean };
+
+const STORE = "voice-demo-v1";
+const TRY = ["Buy 10 Reliance", "Price of Infosys", "How much cash do I have?", "Show my portfolio"];
+const rupees = new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 });
+
+// The browser's own speech recognition: Chrome, Edge and Safari have it, Firefox doesn't.
+type Recognition = {
+	lang: string;
+	interimResults: boolean;
+	continuous: boolean;
+	start(): void;
+	stop(): void;
+	onresult: ((e: { results: ArrayLike<ArrayLike<{ transcript: string }> & { isFinal: boolean }> }) => void) | null;
+	onerror: ((e: { error: string }) => void) | null;
+	onend: (() => void) | null;
+};
+function makeRecognition(): Recognition | null {
+	const w = window as unknown as { SpeechRecognition?: new () => Recognition; webkitSpeechRecognition?: new () => Recognition };
+	const Ctor = w.SpeechRecognition ?? w.webkitSpeechRecognition;
+	return Ctor ? new Ctor() : null;
+}
+
+function speak(text: string) {
+	if (!("speechSynthesis" in window)) return;
+	window.speechSynthesis.cancel();
+	const u = new SpeechSynthesisUtterance(text);
+	const voices = window.speechSynthesis.getVoices();
+	const voice = voices.find((v) => v.lang === "en-IN") ?? voices.find((v) => v.lang.startsWith("en"));
+	if (voice) u.voice = voice;
+	u.rate = 1.04;
+	window.speechSynthesis.speak(u);
+}
+
+/** One line per tool result, in words a visitor can scan. */
+function describe(result: unknown): string {
+	const r = (result ?? {}) as Record<string, any>;
+	if (r.error) return r.error.message ?? "error";
+	if (r.summary) return r.summary;
+	if (r.quote) return `${r.quote.symbol} ${rupees.format(r.quote.ltp)} (${r.quote.changePct >= 0 ? "+" : ""}${Number(r.quote.changePct).toFixed(2)}%)`;
+	if (r.order) return `${r.order.id} ${r.order.side} ${r.order.qty} ${r.order.symbol}: ${String(r.order.status).toLowerCase()}`;
+	if (Array.isArray(r.results)) return r.results.map((m: any) => m.symbol).join(", ") || "no match";
+	if (Array.isArray(r.positions)) return `${r.positions.length} holding${r.positions.length === 1 ? "" : "s"}`;
+	if (Array.isArray(r.orders)) return `${r.orders.length} order${r.orders.length === 1 ? "" : "s"}`;
+	if (r.funds) return `available ${rupees.format(r.funds.available ?? r.funds.cash)}`;
+	const s = JSON.stringify(result);
+	return s.length > 90 ? `${s.slice(0, 90)}…` : s;
+}
+
+function args(a: Record<string, unknown>) {
+	const s = Object.entries(a)
+		.map(([k, v]) => `${k}: ${typeof v === "string" ? `"${v}"` : String(v)}`)
+		.join(", ");
+	return s.length > 80 ? `${s.slice(0, 80)}…` : s;
+}
+
+const PROVIDER: Record<string, string> = { anthropic: "Claude", gemini: "Gemini", rules: "Offline parser" };
+
+export function VoiceDemo() {
+	const [messages, setMessages] = useState<Message[]>([]);
+	const [account, setAccount] = useState<Account | null>(null);
+	const [turn, setTurn] = useState<Turn | null>(null);
+	const [draft, setDraft] = useState("");
+	const [heard, setHeard] = useState("");
+	const [busy, setBusy] = useState(false);
+	const [listening, setListening] = useState(false);
+	const [canListen, setCanListen] = useState(false);
+	const [voice, setVoice] = useState(true);
+	const [problem, setProblem] = useState("");
+	const recognition = useRef<Recognition | null>(null);
+	const log = useRef<HTMLOListElement>(null);
+
+	useEffect(() => {
+		setCanListen(makeRecognition() !== null);
+		try {
+			const saved = JSON.parse(localStorage.getItem(STORE) ?? "null");
+			if (saved?.messages) setMessages(saved.messages);
+			if (saved?.account) setAccount(saved.account);
+		} catch {}
+		return () => recognition.current?.stop();
+	}, []);
+
+	useEffect(() => {
+		try {
+			localStorage.setItem(STORE, JSON.stringify({ messages: messages.slice(-24), account }));
+		} catch {}
+		log.current?.scrollTo({ top: log.current.scrollHeight, behavior: "smooth" });
+	}, [messages, account]);
+
+	const send = useCallback(
+		async (text: string) => {
+			const said = text.trim();
+			if (!said || busy) return;
+			const next = [...messages, { role: "user" as const, content: said }];
+			setMessages(next);
+			setDraft("");
+			setHeard("");
+			setProblem("");
+			setBusy(true);
+			try {
+				const res = await fetch("/api/agent", {
+					method: "POST",
+					headers: { "content-type": "application/json" },
+					body: JSON.stringify({ messages: next, state: account }),
+				});
+				const data = await res.json();
+				if (!res.ok) throw new Error(data.error ?? "The agent didn't answer.");
+				setMessages(data.messages);
+				setAccount(data.state);
+				setTurn({ events: data.events, provider: data.provider, model: data.model, limited: data.limited });
+				if (voice) speak(data.reply);
+			} catch (e) {
+				setProblem((e as Error).message || "The agent didn't answer. Try again.");
+			} finally {
+				setBusy(false);
+			}
+		},
+		[account, busy, messages, voice],
+	);
+
+	function listen() {
+		if (listening) {
+			recognition.current?.stop();
+			return;
+		}
+		const r = makeRecognition();
+		if (!r) return;
+		window.speechSynthesis?.cancel();
+		r.lang = "en-IN";
+		r.interimResults = true;
+		r.continuous = false;
+		let final = "";
+		r.onresult = (e) => {
+			let interim = "";
+			for (const result of Array.from(e.results)) {
+				if (result.isFinal) final = result[0].transcript;
+				else interim += result[0].transcript;
+			}
+			setHeard(final || interim);
+		};
+		r.onerror = (e) => {
+			if (e.error === "not-allowed") setProblem("The browser blocked the microphone. Allow it, or type instead.");
+			else if (e.error !== "no-speech" && e.error !== "aborted") setProblem("I couldn't hear that. Try again, or type it.");
+		};
+		r.onend = () => {
+			setListening(false);
+			recognition.current = null;
+			if (final) send(final);
+		};
+		recognition.current = r;
+		setListening(true);
+		r.start();
+	}
+
+	function reset() {
+		window.speechSynthesis?.cancel();
+		setMessages([]);
+		setAccount(null);
+		setTurn(null);
+		setProblem("");
+	}
+
+	const holdings = Object.entries(account?.positions ?? {}).filter(([, p]) => p.qty > 0);
+	const open = (account?.orders ?? []).filter((o) => o.status === "OPEN").length;
+	const waiting = Boolean(account?.pendingPreviewId);
+
+	return (
+		<section aria-labelledby="try-h" data-reveal className="mt-14 border-2 border-ink bg-paper-shade">
+			<header className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 border-b-2 border-ink px-5 py-4 sm:px-7">
+				<h2 id="try-h" className="font-display text-3xl leading-none font-black uppercase sm:text-4xl">
+					Try the rebuild
+				</h2>
+				<p className="catalogue text-ink-mute">Simulated prices · paper account · no real money</p>
+			</header>
+
+			<div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
+				{/* The conversation, and the ways in: mic, keyboard, suggestions. */}
+				<div className="flex min-h-[26rem] flex-col border-ink lg:border-r-2">
+					<ol ref={log} aria-live="polite" className="max-h-[22rem] flex-1 space-y-3 overflow-y-auto px-5 py-5 sm:px-7">
+						{messages.length === 0 && (
+							<li className="max-w-[46ch] text-ink-soft">
+								Ask for a quote, place an order or check your holdings. The agent reads every order back and waits for your yes before it
+								places anything.
+							</li>
+						)}
+						{messages.map((m, i) => (
+							<li key={`${i}-${m.content.slice(0, 12)}`} className={m.role === "user" ? "flex justify-end" : "flex"}>
+								<p
+									className={`max-w-[85%] px-3.5 py-2 leading-snug [animation:pop-in_400ms_var(--ease-out-expo)_both] ${
+										m.role === "user" ? "bg-ink text-paper" : "border-2 border-plum bg-paper text-ink"
+									}`}
+								>
+									{m.content}
+								</p>
+							</li>
+						))}
+						{busy && (
+							<li className="flex" aria-label="The agent is working">
+								<span className="flex h-9 items-center gap-1 border-2 border-plum bg-paper px-3 text-plum">
+									{[0, 1, 2].map((d) => (
+										<span key={d} className="size-1.5 rounded-full bg-current" style={{ animation: `speak 900ms ease-in-out ${d * 0.15}s infinite` }} />
+									))}
+								</span>
+							</li>
+						)}
+					</ol>
+
+					<div className="border-t-2 border-ink px-5 py-4 sm:px-7">
+						{(heard || listening) && (
+							<p className="mb-3 catalogue text-plum" aria-live="polite">
+								{heard ? `Heard: ${heard}` : "Listening…"}
+							</p>
+						)}
+						{problem && <p className="mb-3 text-sm font-semibold text-post">{problem}</p>}
+						<form
+							className="flex items-center gap-3"
+							onSubmit={(e) => {
+								e.preventDefault();
+								send(draft);
+							}}
+						>
+							{canListen && (
+								<button
+									type="button"
+									onClick={listen}
+									disabled={busy}
+									aria-pressed={listening}
+									aria-label={listening ? "Stop listening" : "Speak an instruction"}
+									className="relative grid size-14 shrink-0 place-items-center rounded-full bg-plum text-paper transition-transform duration-300 ease-out-expo hover:scale-105 disabled:opacity-50"
+								>
+									{listening && <span className="absolute inset-0 animate-ping rounded-full bg-plum opacity-40" aria-hidden="true" />}
+									{listening ? <Square className="relative size-5" aria-hidden="true" /> : <Mic className="relative size-6" aria-hidden="true" />}
+								</button>
+							)}
+							<label className="sr-only" htmlFor="voice-demo-input">
+								Instruction
+							</label>
+							<input
+								id="voice-demo-input"
+								value={draft}
+								onChange={(e) => setDraft(e.target.value)}
+								maxLength={300}
+								autoComplete="off"
+								placeholder={waiting ? "Say yes to place it, or no" : canListen ? "Or type: buy 10 Reliance" : "Type: buy 10 Reliance"}
+								className="h-12 min-w-0 flex-1 border-2 border-ink bg-paper px-3 placeholder:text-ink-mute focus:outline-none focus-visible:border-plum"
+							/>
+							<button
+								type="submit"
+								disabled={busy || !draft.trim()}
+								aria-label="Send"
+								className="grid size-12 shrink-0 place-items-center bg-ink text-paper disabled:opacity-40"
+							>
+								<Send className="size-5" aria-hidden="true" />
+							</button>
+						</form>
+						<div className="mt-3 flex flex-wrap items-center gap-2">
+							{(waiting ? ["Yes", "No"] : TRY).map((t) => (
+								<button
+									key={t}
+									type="button"
+									disabled={busy}
+									onClick={() => send(t)}
+									className="border border-ink px-2.5 py-1 text-sm font-semibold transition-colors hover:bg-ink hover:text-paper disabled:opacity-40"
+								>
+									{t}
+								</button>
+							))}
+						</div>
+						{!canListen && <p className="mt-3 text-sm text-ink-mute">This browser has no speech input. Chrome, Edge or Safari can use the mic.</p>}
+					</div>
+				</div>
+
+				{/* What the agent did with MCP, and the account it did it to. */}
+				<div className="flex flex-col border-t-2 border-ink lg:border-t-0">
+					<div className="flex-1 px-5 py-5 sm:px-7">
+						<div className="flex items-baseline justify-between gap-4">
+							<h3 className="catalogue text-ink-mute">MCP tool calls</h3>
+							{turn && (
+								<span className="catalogue text-plum" title={turn.model}>
+									{PROVIDER[turn.provider] ?? turn.provider}
+									{turn.limited && " · demo limit reached"}
+								</span>
+							)}
+						</div>
+						{turn?.events.length ? (
+							<ol className="mt-3 space-y-1.5 font-mono text-[12.5px] leading-snug">
+								{turn.events.map((e, i) => (
+									<li
+										key={`${i}-${e.name}`}
+										className="[animation:pop-in_360ms_var(--ease-out-expo)_both]"
+										style={{ animationDelay: `${i * 90}ms` }}
+									>
+										{e.type === "tool_call" ? (
+											<span>
+												<span className="text-plum">→ {e.name}</span>
+												<span className="text-ink-mute">({args(e.args)})</span>
+											</span>
+										) : (
+											<span className={e.isError ? "text-post" : "text-ink-soft"}>← {describe(e.result)}</span>
+										)}
+									</li>
+								))}
+							</ol>
+						) : (
+							<p className="mt-3 text-sm text-ink-mute">Each tool the agent calls shows up here, with what came back.</p>
+						)}
+					</div>
+
+					<div className="border-t-2 border-ink px-5 py-5 sm:px-7">
+						<div className="flex items-baseline justify-between gap-4">
+							<h3 className="catalogue text-ink-mute">Paper account</h3>
+							<div className="flex items-center gap-1">
+								<button
+									type="button"
+									onClick={() => {
+										setVoice((v) => !v);
+										window.speechSynthesis?.cancel();
+									}}
+									aria-pressed={voice}
+									aria-label={voice ? "Stop reading replies aloud" : "Read replies aloud"}
+									className="grid size-9 place-items-center hover:bg-ink hover:text-paper"
+								>
+									{voice ? <Volume2 className="size-4" aria-hidden="true" /> : <VolumeX className="size-4" aria-hidden="true" />}
+								</button>
+								<button
+									type="button"
+									onClick={reset}
+									aria-label="Reset the account"
+									className="grid size-9 place-items-center hover:bg-ink hover:text-paper"
+								>
+									<RotateCcw className="size-4" aria-hidden="true" />
+								</button>
+							</div>
+						</div>
+						<p className="mt-1 font-display text-4xl leading-none font-black tabular-nums">{rupees.format(account?.cash ?? 1_000_000)}</p>
+						<p className="catalogue text-ink-mute">cash{open > 0 && ` · ${open} open order${open === 1 ? "" : "s"}`}</p>
+						{holdings.length > 0 && (
+							<ul className="mt-3 divide-y divide-rule border-t border-rule text-sm">
+								{holdings.map(([sym, p]) => (
+									<li key={sym} className="flex justify-between gap-4 py-1.5 tabular-nums">
+										<span className="font-semibold">{sym}</span>
+										<span className="text-ink-soft">
+											{p.qty} × {rupees.format(p.avgPrice)}
+										</span>
+									</li>
+								))}
+							</ul>
+						)}
+					</div>
+				</div>
+			</div>
+		</section>
+	);
+}

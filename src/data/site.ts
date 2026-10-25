@@ -175,8 +175,17 @@ export const caseStudies: CaseStudy[] = [
 					"The agent won Ideathon 2026. In the hackathon after it, I mentored two teams of eight, and both shipped to production.",
 				],
 			},
+			{
+				heading: "The public rebuild",
+				body: [
+					"The Ideathon version was internal, so I rebuilt the idea from scratch in the open. Your browser turns speech into text. An agent on this site reads it and calls tools on an MCP server, which runs a paper trading account with simulated prices. The reply is read back aloud.",
+					"Every order is previewed and read back first, and nothing is placed until you say yes. The server only accepts an order that came from a preview, so the model can't place a trade you never heard.",
+					"The MCP server is open source. It also works with Claude Desktop or any other MCP client.",
+				],
+			},
 		],
-		note: "It was an internal project, so there's no public code or video. I can walk you through how I built it.",
+		links: [{ label: "MCP server on GitHub", href: "https://github.com/dubeyanant/paper-broker-mcp" }],
+		note: "The original agent was internal, so its code stays private. The demo above is the rebuild, and it shares no code with the original.",
 	},
 	{
 		slug: "ui-inspection-tool",

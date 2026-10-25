@@ -7,6 +7,7 @@ import { Mask } from "@/components/Mask";
 import { Arrowed, inkClass } from "@/components/Stamp";
 import { TransitionLink } from "@/components/Transition";
 import { FnoVignette, VoiceVignette } from "@/components/Vignettes";
+import { VoiceDemo } from "@/components/VoiceDemo";
 import { caseStudies } from "@/data/site";
 
 export function generateStaticParams() {
@@ -79,6 +80,8 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
 						</div>
 					))}
 				</dl>
+
+				{c.slug === "voice-trading-agent" && <VoiceDemo />}
 
 				<article className="prose-letter mt-4">
 					{c.sections.map((s) => (
