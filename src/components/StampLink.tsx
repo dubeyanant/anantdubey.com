@@ -1,29 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { type ReactNode, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { type ReactNode, useLayoutEffect, useRef, useState } from "react";
 import { Postmark } from "./Postmark";
 import { prefersReducedMotion, usePageTransition } from "./Transition";
-
-const KEY = "cancelled-stamps";
-
-function readCancelled(): string[] {
-	try {
-		return JSON.parse(localStorage.getItem(KEY) ?? "[]");
-	} catch {
-		return [];
-	}
-}
-
-function markCancelled(slug: string) {
-	try {
-		const all = new Set(readCancelled());
-		all.add(slug);
-		localStorage.setItem(KEY, JSON.stringify([...all]));
-	} catch {
-		// storage unavailable (private mode): the stamp just won't stay cancelled
-	}
-}
 
 type Tear = { w: number; h: number; left: string; right: string; edge: string; pivot: number };
 
@@ -65,10 +45,8 @@ function planTear(w: number, h: number, px: number, py: number): Tear {
  * Load: it is printed onto the sheet in turn (`order` staggers it).
  * Hover/focus: it peels up on its hinge.
  * Click: it tears where you pressed, the halves twist apart and drop, and its ink floods into the next page.
- * Opened stamps carry a postmark from then on.
  */
 export function StampLink({
-	slug,
 	href,
 	label,
 	cover,
@@ -77,7 +55,6 @@ export function StampLink({
 	className = "",
 	children,
 }: {
-	slug: string;
 	href: string;
 	label: string;
 	/** Destination title and ink for the page transition; omit for in-page anchors. */
@@ -88,15 +65,10 @@ export function StampLink({
 	children: ReactNode;
 }) {
 	const { go } = usePageTransition();
-	const [cancelled, setCancelled] = useState(false);
 	const [tear, setTear] = useState<Tear | null>(null);
 	const faceRef = useRef<HTMLDivElement>(null);
 	const leftRef = useRef<HTMLDivElement>(null);
 	const rightRef = useRef<HTMLDivElement>(null);
-
-	useEffect(() => {
-		setCancelled(readCancelled().includes(slug));
-	}, [slug]);
 
 	// Next keeps a page alive (hidden) after you leave it, so coming back would show the torn halves.
 	// Mend the stamp when the page is hidden, and when the browser restores it from its back/forward cache.
@@ -104,14 +76,13 @@ export function StampLink({
 		const mend = (e?: PageTransitionEvent) => {
 			if (e && !e.persisted) return;
 			setTear(null);
-			setCancelled(readCancelled().includes(slug));
 		};
 		window.addEventListener("pageshow", mend);
 		return () => {
 			window.removeEventListener("pageshow", mend);
 			setTear(null);
 		};
-	}, [slug]);
+	}, []);
 
 	// Run the tear: the crack races down (accelerating, like a real tear), the halves open into a V, then fall.
 	useLayoutEffect(() => {
@@ -142,12 +113,12 @@ export function StampLink({
 	const face = (
 		<>
 			{children}
-			{/* A stamp issued with a shipped date always shows its postmark; others earn one once opened. */}
-			{(postmark || cancelled) && (
+			{/* Only a stamp issued with a shipped date carries a postmark. */}
+			{postmark && (
 				<Postmark
-					lines={postmark ?? ["Received", "Mumbai", String(new Date().getFullYear())]}
-					animate={Boolean(postmark) && !tear}
-					delay={postmark ? 140 + order * 110 + 700 : 0}
+					lines={postmark}
+					animate={!tear}
+					delay={140 + order * 110 + 700}
 					className="pointer-events-none absolute top-[14%] right-[3%] w-[58%] max-w-72"
 				/>
 			)}
@@ -161,7 +132,6 @@ export function StampLink({
 			className={`group relative block outline-offset-8 ${tear ? "z-40" : ""} ${className}`}
 			style={{ animation: `print-in 760ms var(--ease-out-expo) ${140 + order * 110}ms both` }}
 			onClick={(e) => {
-				markCancelled(slug);
 				if (e.metaKey || e.ctrlKey || e.shiftKey || prefersReducedMotion() || tear) return;
 				const box = faceRef.current?.getBoundingClientRect();
 				if (!box) return;
@@ -177,7 +147,6 @@ export function StampLink({
 					window.setTimeout(() => {
 						document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
 						setTear(null);
-						setCancelled(true);
 					}, 650);
 				}
 			}}

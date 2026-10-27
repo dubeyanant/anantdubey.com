@@ -55,7 +55,8 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
 									</div>
 								)}
 								{c.slug === "voice-trading-agent" && <VoiceVignette />}
-								<span className="font-display text-6xl leading-[0.85] font-black uppercase">
+								{/* Long denominations (2MO→4D) step down so they fit inside the frame. */}
+								<span className={`font-display leading-[0.85] font-black whitespace-nowrap uppercase ${c.denomination.length > 4 ? "text-4xl" : "text-6xl"}`}>
 									<Arrowed value={c.denomination} />
 								</span>
 							</div>

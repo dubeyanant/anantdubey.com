@@ -74,7 +74,7 @@ export default function Home() {
 						<section aria-label="Selected work, as a sheet of stamps" className="min-w-0">
 							<ul className="-mx-5 flex snap-x snap-mandatory scroll-px-5 gap-5 overflow-x-auto px-5 pt-2 pb-4 sm:-mx-10 sm:px-10 lg:mx-0 lg:grid lg:grid-cols-3 lg:grid-rows-[repeat(3,minmax(13rem,1fr))] lg:gap-6 lg:overflow-visible lg:p-0">
 								<li className="w-[85vw] max-w-sm shrink-0 snap-start lg:col-span-2 lg:row-span-2 lg:w-auto lg:max-w-none">
-									<StampLink slug={fno.slug} href={fno.href} label={`${fno.denomination} ${fno.caption}`} cover={coverFor(fno.href)} postmark={fno.postmark} order={0} className="h-full">
+									<StampLink href={fno.href} label={`${fno.denomination} ${fno.caption}`} cover={coverFor(fno.href)} postmark={fno.postmark} order={0} className="h-full">
 										<div className="h-[21rem] lg:h-full">
 											<StampFace stamp={fno} size="hero" />
 										</div>
@@ -82,7 +82,7 @@ export default function Home() {
 								</li>
 								{singles.map((s, i) => (
 									<li key={s.slug} className="w-[70vw] max-w-72 shrink-0 snap-start lg:w-auto lg:max-w-none">
-										<StampLink slug={s.slug} href={s.href} label={`${s.denomination}: ${s.caption}`} cover={coverFor(s.href)} order={i + 1} className="h-full">
+										<StampLink href={s.href} label={`${s.denomination}: ${s.caption}`} cover={coverFor(s.href)} order={i + 1} className="h-full">
 											<div className="h-[17rem] lg:h-full">
 												<StampFace stamp={s} />
 											</div>
