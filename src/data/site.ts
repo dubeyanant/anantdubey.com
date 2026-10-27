@@ -160,6 +160,7 @@ export const caseStudies: CaseStudy[] = [
 				heading: "The idea",
 				body: [
 					"Trading apps make you tap through a lot of screens. I wanted one spoken sentence to do the same job. You say what you want, and the app does it and tells you when it's done.",
+					"I had people in mind for whom today's apps are hard work: investors in smaller cities who would rather not use an English-only app, older investors fighting small fonts and crowded menus, and people with disabilities.",
 				],
 			},
 			{
@@ -196,27 +197,31 @@ export const caseStudies: CaseStudy[] = [
 		denomination: "2MO→4D",
 		year: "2026",
 		role: "Built for Sharekhan's QA and Design teams",
-		stack: ["Flutter", "Internal tooling"],
-		summary: "A tool I built that cut UI and accessibility testing from two months to four days.",
+		stack: ["Flutter", "Dart", "WCAG 2.1", "Internal tooling"],
+		summary: "An on-device Flutter inspector I built that cut UI and accessibility testing from two months to four days.",
 		sections: [
 			{
 				heading: "The problem",
 				body: [
 					"UI and accessibility testing for the trading app took the QA and Design teams about two months.",
+					"Since SEBI's July 2025 accessibility circular, text in a broking app also has to meet WCAG 2.1 AA colour contrast.",
 				],
 			},
 			{
 				heading: "What I built",
 				body: [
-					"I built a UI inspection tool that those teams use to run the checks.",
+					"An inspector that runs inside the app itself, built as a Flutter package. In a test build, a small toolbar floats over the real screens.",
+					"Tap a widget to see its distance to each screen edge, or tap two to see the gap between them. It measures in logical pixels, the same unit a Figma frame uses, so the numbers compare straight to the design. Text shows its size, weight, font and colours.",
+					"Tap any text and it checks the contrast against WCAG 2.1 AA. It reads the background from the pixels the app actually drew, so the check holds over gradients, images and cards.",
+					"For bug reports it shows the app version, device and screen size, and takes a screenshot with the measurements drawn on it. In a debug build it also shows the file and line that created the widget. Normal builds don't include it at all.",
 				],
 			},
 			{
 				heading: "The result",
-				body: ["The same testing now takes four days."],
+				body: ["The same testing now takes four days. The package has 155 automated tests."],
 			},
 		],
-		note: "It's an internal tool, so I can't show screenshots.",
+		note: "It's an internal tool, so I can't show screenshots or code.",
 	},
 	{
 		slug: "my-people",
@@ -264,7 +269,7 @@ export const album: AlbumEntry[] = [
 ];
 
 export const experience = [
-	{ years: "2026 –", role: "Assistant Manager", org: "Sharekhan, Mumbai", detail: "I lead AI integration in the mobile team. I built the UI inspection tool and the Razorpay Collect and Intent fund-transfer flows." },
+	{ years: "2026 –", role: "Assistant Manager", org: "Sharekhan, Mumbai", detail: "I lead AI integration in the mobile team, including a Claude Code setup that checks changes against our module standard and writes the unit tests. I built the UI inspection tool and the Razorpay Collect and Intent fund-transfer flows." },
 	{ years: "2024–26", role: "Associate Developer", org: "Sharekhan, Mumbai", detail: "Built one-click F&O, which handles 10% of trade volume. Moved the code to Riverpod, set up Firebase engagement workflows, migrated the app to Flutter Web and WASM, and built the CI/CD pipeline." },
 	{ years: "2024", role: "Intern Developer", org: "Sharekhan, Navi Mumbai", detail: "Helped move the mobile apps from native Android and iOS to Flutter. Handled the UI and UX fixes." },
 	{ years: "2022–24", role: "M.Sc. Computer Science", org: "MIT World Peace University, Pune", detail: "CGPA 8.6." },
@@ -274,5 +279,5 @@ export const skills = [
 	["Mobile", "Flutter, Dart, Riverpod, BLoC, GetX, Firebase, Drift/SQLite, Flutter Web (WASM)"],
 	["Web", "Next.js, TypeScript, JavaScript, Supabase, REST APIs"],
 	["AI", "AI agents, MCP tool calling, STT/TTS, LLM APIs (Gemini), n8n"],
-	["Practice", "CI/CD, testing, Agile, Claude Code, Codex, Figma"],
+	["Practice", "CI/CD, testing, accessibility (WCAG 2.1), Agile, Claude Code, Codex, Figma"],
 ] as const;
