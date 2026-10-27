@@ -376,6 +376,13 @@ export const caseStudies: CaseStudy[] = [
 			{ label: "Google Play", href: "https://play.google.com/store/apps/details?id=com.infiniteants.mypeople" },
 			{ label: "Source on GitHub", href: "https://github.com/dubeyanant/my_people" },
 		],
+		shots: [
+			{ src: "/work/my-people/people.webp", alt: "My People's home screen: a grid of six people with their photos.", width: 540, height: 1200 },
+			{ src: "/work/my-people/profile.webp", alt: "A profile at night: birthday, work, relationship, interests and diet, with an upcoming housewarming dinner.", width: 540, height: 1200 },
+			{ src: "/work/my-people/notes.webp", alt: "The same person's notes as a timeline, from the first meeting in college to a gift idea for her new flat.", width: 540, height: 1200 },
+			{ src: "/work/my-people/privacy.webp", alt: "The What leaves your device screen: chat is off without a key, and everything else stays on the phone.", width: 540, height: 1200 },
+			{ src: "/work/my-people/morning.webp", alt: "The same profile in the light morning theme.", width: 540, height: 1200 },
+		],
 		sections: [
 			{
 				heading: "Why I built it",
@@ -417,6 +424,7 @@ export const caseStudies: CaseStudy[] = [
 				],
 			},
 		],
+		note: "The people and notes in the screenshots are invented.",
 	},
 ];
 
