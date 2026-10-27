@@ -112,7 +112,6 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
 							))}
 						</section>
 					))}
-					{c.note && <p className="border-t border-rule pt-5 text-base text-ink-mute italic">{c.note}</p>}
 				</article>
 
 				<TransitionLink

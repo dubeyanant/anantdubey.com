@@ -226,7 +226,7 @@ export function VoiceDemo() {
 					Try the rebuild
 				</h2>
 				<div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-					<p className="catalogue text-ink-mute">Simulated prices · paper account · no real money</p>
+					<p className="catalogue text-ink-mute">Paper account · simulated prices</p>
 					<div role="group" aria-label="Language" className="flex border-2 border-ink">
 						{(["en", "hi"] as const).map((l) => (
 							<button
@@ -252,10 +252,10 @@ export function VoiceDemo() {
 							<li className="max-w-[46ch] text-ink-soft">
 								{lang === "hi" ? (
 									<span lang="hi" className="font-deva">
-										भाव पूछिए, ऑर्डर लगाइए, किसी शेयर की खबरें सुनिए या कोई फ़ॉरवर्ड की गई टिप जाँचिए। हर ऑर्डर पहले पढ़कर सुनाया जाता है और आपकी हाँ के बाद ही लगता है।
+										भाव पूछिए, ऑर्डर लगाइए, खबरें सुनिए या कोई टिप जाँचिए।
 									</span>
 								) : (
-									"Ask for a quote, place an order, hear the news on a stock or check a forwarded tip. The agent reads every order back and waits for your yes before it places anything."
+									"Ask for a quote, place an order, get the news or check a tip."
 								)}
 							</li>
 						)}
@@ -409,7 +409,7 @@ export function VoiceDemo() {
 								))}
 							</ol>
 						) : (
-							<p className="mt-3 text-sm text-ink-mute">Each tool the agent calls shows up here, with what came back.</p>
+							<p className="mt-3 text-sm text-ink-mute">Tool calls show up here.</p>
 						)}
 					</div>
 

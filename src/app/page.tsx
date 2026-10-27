@@ -65,8 +65,6 @@ export default function Home() {
 							<div className="mt-8 hidden flex-wrap gap-3 lg:flex">{ctas}</div>
 							<p className="mt-auto hidden pt-10 catalogue lg:block">
 								Each stamp is something I shipped.
-								<br />
-								Click one to tear it off and read about it.
 							</p>
 						</div>
 
@@ -102,9 +100,6 @@ export default function Home() {
 					<h2 data-reveal="mask" className="font-display text-[clamp(3rem,7vw,5.5rem)] leading-[0.88] font-black uppercase">
 						<Mask>The work</Mask>
 					</h2>
-					<p data-reveal className="mt-4 max-w-[52ch] text-lg text-ink-soft">
-						Six projects in detail. The rest are in the album below.
-					</p>
 					<ol className="mt-12">
 						{caseStudies.map((c) => (
 							<li key={c.slug} data-reveal className="border-t-2 border-ink">
@@ -138,7 +133,6 @@ export default function Home() {
 						<h2 data-reveal="mask" className="font-display text-[clamp(3rem,7vw,5.5rem)] leading-[0.88] font-black uppercase">
 						<Mask>The album</Mask>
 					</h2>
-						<p data-reveal className="mt-4 max-w-[52ch] text-lg text-paper-shade">My side projects and hackathon builds.</p>
 						<ul className="mt-12 grid grid-flow-dense gap-7 sm:grid-cols-2 lg:grid-cols-6">
 							{album.map((a, i) => {
 								// Formats vary like a real issue: a tall lead, a wide commemorative, two hackathon halves.
@@ -191,9 +185,6 @@ export default function Home() {
 					<h2 data-reveal="mask" className="font-display text-[clamp(3rem,7vw,5.5rem)] leading-[0.88] font-black uppercase">
 						<Mask>Experience</Mask>
 					</h2>
-					<p data-reveal className="mt-4 max-w-[52ch] text-lg text-ink-soft">
-						I've worked on Sharekhan's trading app since 2024 and was promoted within two years.
-					</p>
 					<ol className="mt-12">
 						{experience.map((e) => (
 							<li key={e.role} data-reveal className="grid gap-2 border-t border-rule py-6 sm:grid-cols-[9rem_1fr] sm:gap-8">

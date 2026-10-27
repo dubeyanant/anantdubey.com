@@ -111,7 +111,6 @@ export type CaseStudy = {
 	/** Phone screenshots, shown in a row under the stack. Sample or invented data only. */
 	shots?: { src: string; alt: string; width: number; height: number }[];
 	sections: { heading: string; body: string[] }[];
-	note?: string;
 };
 
 export const caseStudies: CaseStudy[] = [
@@ -135,18 +134,16 @@ export const caseStudies: CaseStudy[] = [
 				heading: "What I owned",
 				body: [
 					"I architected and built the one-click F&O module. A trader picks an instrument and places the order with one tap.",
-					"In the same period I moved the legacy code to Riverpod and SOLID principles, which made new modules easier to build. I also designed the CI/CD pipeline and release process that several teams use today.",
+					"In the same period I moved the legacy code to Riverpod and built the CI/CD pipeline that several teams use today.",
 				],
 			},
 			{
 				heading: "The result",
 				body: [
 					"The module now handles 10% of the app's total trade volume.",
-					"Trading screens leave no room for a slow path. I design the fastest path first and write the unit and integration tests with the feature.",
 				],
 			},
 		],
-		note: "I built this inside Sharekhan's production app, so I can't share screens, data or architecture here. I'm happy to talk through the engineering decisions.",
 	},
 	{
 		slug: "voice-trading-agent",
@@ -156,20 +153,19 @@ export const caseStudies: CaseStudy[] = [
 		year: "2026",
 		role: "Builder and pitch, Ideathon 2026",
 		stack: ["Speech-to-text", "MCP tools", "Brokerage APIs", "Text-to-speech", "TypeScript"],
-		summary: "A voice AI agent for broking apps. It won Ideathon 2026, judged by a 12-member jury. You can try a rebuild of it live, and its MCP server is open source.",
+		summary: "A voice AI agent for broking apps. It won Ideathon 2026.",
 		sections: [
 			{
 				heading: "The idea",
 				body: [
-					"Trading apps make you tap through a lot of screens. I wanted one spoken sentence to do the same job. You say what you want, and the app does it and tells you when it's done.",
-					"I had people in mind for whom today's apps are hard work: investors in smaller cities who would rather not use an English-only app, older investors fighting small fonts and crowded menus, and people with disabilities.",
+					"Trading apps make you tap through a lot of screens. I wanted one spoken sentence to do the same job.",
+					"It was for the people today's apps leave behind: investors who don't read English, older investors, and people with disabilities.",
 				],
 			},
 			{
 				heading: "How it works",
 				body: [
-					"Speech-to-text turns the user's words into structured input. That input triggers MCP tool calls. Each tool calls a brokerage API, and text-to-speech reads the confirmation back.",
-					"It ran on a demo brokerage app. The tools still called real APIs and got real confirmations back.",
+					"Speech-to-text feeds an agent that calls brokerage APIs through MCP tools, and text-to-speech reads the result back.",
 				],
 			},
 			{
@@ -181,16 +177,15 @@ export const caseStudies: CaseStudy[] = [
 			{
 				heading: "The public rebuild",
 				body: [
-					"The Ideathon version was internal, so I rebuilt the idea from scratch in the open. Your browser turns speech into text. An agent on this site reads it and calls tools on an MCP server, which runs a paper trading account with simulated prices. The reply is read back aloud.",
-					"Every order is previewed and read back first, and nothing is placed until you say yes. The server only accepts an order that came from a preview, so the model can't place a trade you never heard.",
-					"It also reads the news. Ask about a stock and it summarises this week's real headlines, keeping what was reported apart from the hype. Paste a tip from a WhatsApp or Telegram group and it points out the signs of a pump-and-dump: guaranteed returns, short-term targets, urgency, paid groups.",
-					"It works in Hindi as well as English, by voice or by typing.",
-					"The MCP server is open source. It also works with Claude Desktop or any other MCP client.",
+					"I rebuilt it from scratch in the open, on a paper trading account. Try it above.",
+					"Every order is read back, and nothing is placed until you say yes.",
+					"It summarises this week's headlines for a stock and flags pump-and-dump signs in a forwarded tip.",
+					"It works in Hindi and English.",
+					"The MCP server is open source and works with any MCP client.",
 				],
 			},
 		],
 		links: [{ label: "MCP server on GitHub", href: "https://github.com/dubeyanant/paper-broker-mcp" }],
-		note: "The original agent was internal, so its code stays private. The demo above is the rebuild, and it shares no code with the original.",
 	},
 	{
 		slug: "ui-inspection-tool",
@@ -206,24 +201,23 @@ export const caseStudies: CaseStudy[] = [
 				heading: "The problem",
 				body: [
 					"UI and accessibility testing for the trading app took the QA and Design teams about two months.",
-					"Since SEBI's July 2025 accessibility circular, text in a broking app also has to meet WCAG 2.1 AA colour contrast.",
+					"SEBI's July 2025 circular also made WCAG 2.1 AA contrast a requirement.",
 				],
 			},
 			{
 				heading: "What I built",
 				body: [
-					"An inspector that runs inside the app itself, built as a Flutter package. In a test build, a small toolbar floats over the real screens.",
-					"Tap a widget to see its distance to each screen edge, or tap two to see the gap between them. It measures in logical pixels, the same unit a Figma frame uses, so the numbers compare straight to the design. Text shows its size, weight, font and colours.",
-					"Tap any text and it checks the contrast against WCAG 2.1 AA. It reads the background from the pixels the app actually drew, so the check holds over gradients, images and cards.",
-					"For bug reports it shows the app version, device and screen size, and takes a screenshot with the measurements drawn on it. In a debug build it also shows the file and line that created the widget. Normal builds don't include it at all.",
+					"A Flutter package that runs inside the app. In test builds, a toolbar floats over the real screens.",
+					"Tap a widget to see its distance to each edge, or two to see the gap between them, in the same units as Figma. Text shows its size, weight, font and colours.",
+					"Tapping text checks its contrast against WCAG 2.1 AA, using the rendered pixels as the background.",
+					"It takes annotated screenshots for bug reports, and in debug builds shows the file and line behind each widget.",
 				],
 			},
 			{
 				heading: "The result",
-				body: ["The same testing now takes four days. The package has 155 automated tests."],
+				body: ["The same testing now takes four days."],
 			},
 		],
-		note: "It's an internal tool, so I can't show screenshots or code.",
 	},
 	{
 		slug: "chitt",
@@ -233,7 +227,7 @@ export const caseStudies: CaseStudy[] = [
 		year: "2026",
 		role: "Designed and built solo · In closed testing on Google Play",
 		stack: ["Flutter", "Riverpod", "Drift/SQLite", "English · हिन्दी · मराठी"],
-		summary: "A private journal for the moments that hit you during the day: a few words, a voice note or a photo, stamped with the time and the weather, and kept on your phone.",
+		summary: "A private journal for the moments that hit you during the day.",
 		links: [{ label: "Join the beta", href: "/chitt" }],
 		shots: [
 			{ src: "/work/chitt/today.webp", alt: "Chitt's today screen: a writing prompt that asks what the light looks like, above the day's earlier chits.", width: 540, height: 1129 },
@@ -246,52 +240,50 @@ export const caseStudies: CaseStudy[] = [
 			{
 				heading: "Why I built it",
 				body: [
-					"I built Chitt for myself first. The things I wanted to keep came to me in the middle of the day, not at a desk in the evening, and a journal that waited for the evening never got them.",
-					"Most people who try journaling quit for the same reason: a blank page asks for a session, and nobody has a session to give at 2:54 pm.",
+					"I built Chitt for myself. The things I wanted to write down came to me in the middle of the day, not at a desk in the evening.",
 				],
 			},
 			{
 				heading: "What I believe",
 				body: [
-					"You write when something hits you: several times a day, in a few words, and then you get on with your life. People write in bursts, not sessions, and the habit survives on rhythm, not scores. So there are no streaks and no scores.",
-					"चित्त (chitta) is Sanskrit for consciousness, the field where impressions land. A chit is a small slip of paper you scribble on and keep. An app that takes that name has to earn it, so everything you write stays on your phone until you choose to carry it out.",
+					"You write when something hits you, in a few words, and get on with your day. No streaks, no scores.",
+					"चित्त is Sanskrit for consciousness. A chit is a slip of paper you scribble on and keep. Everything you write stays on your phone.",
 				],
 			},
 			{
 				heading: "What it does",
 				body: [
-					"One composer: type a few words, record a voice note, or add a photo. A chit can be a moment, an idea or a snippet. Each one is stamped with the time, the weather and whether you were moving.",
-					"Today shows your day as a thread, with the past week dimmed behind it. Past shows the month. Find works across weather, motion, people, topics, places and type, with @person and #topic tags and a map that works offline.",
-					"An app lock, backup and restore, and a chit shared as a picture. In English, Hindi and Marathi.",
+					"Write a few words, record a voice note or add a photo. Each chit is stamped with the time and the weather.",
+					"Today shows your day as a thread, with the past week dimmed behind it. Find searches by people, topics, places and weather, on an offline map.",
+					"In English, Hindi and Marathi.",
 				],
 			},
 			{
 				heading: "The details",
 				body: [
-					"The prompt changes with the hour and the weather. It might ask what the light looks like, or where the day has got to.",
-					"It doesn't ask for any permission until after your first save. You see what the app is for before it asks you for anything, and when it asks for your location, it says why: only to store the weather with each chit.",
-					"The time on a chit is read when you save and never moves. The seal means now; a record is ink.",
-					"Voice notes are kept as recordings and never transcribed. The recording is the record.",
-					"It's dark, because journaling happens at night more often than not, and it's meant to feel like paper: warm near-black, paper-coloured ink, one red accent called the seal, and structure from thin rules instead of cards and shadows.",
-					"Hindi and English sit on one shared baseline, so a line that mixes both doesn't jump. I wrote the Hindi and Marathi text myself.",
-					"A delete button is never the bright one, and a link asks before it opens.",
+					"The prompt changes with the hour and the weather: what does the light look like?",
+					"It asks for no permissions until after your first save.",
+					"The time on a chit is set when you save and never changes.",
+					"Voice notes are never transcribed.",
+					"It's dark because most journaling happens at night, and it feels like paper: thin rules instead of cards, and one red accent.",
+					"Hindi and English share one baseline. I wrote the Hindi and Marathi copy myself.",
+					"A delete button is never the bright one.",
 				],
 			},
 			{
 				heading: "How it's built",
 				body: [
-					"Flutter with Riverpod and a local SQLite database. The layers are strict: screens never reach the database directly, and the clock is injected so time can be tested.",
-					"Only four kinds of request ever leave the phone: crash reports, anonymous usage counts, one config check, and the weather lookup. What you write never does. The analytics code only accepts counts and flags, and a test fails if anyone passes it text.",
-					"Over 1,400 unit tests, and house rules enforced as tests, such as no private data in analytics and no hard-coded strings. Every design and engineering decision is written down: about 200 of them so far. Measured on one phone with 2,000 chits, it opens in under a second.",
+					"Flutter, Riverpod and a local SQLite database.",
+					"What you write never leaves the phone. Analytics only accept counts, and a test fails if text gets in.",
+					"Over 1,400 unit tests and about 200 written design decisions. With 2,000 chits it opens in under a second.",
 					"AI coding tools helped along the way.",
 				],
 			},
 			{
 				heading: "Where it is now",
-				body: ["Version 1.4 is in closed testing on Google Play, on Android. You can join the beta from its page."],
+				body: ["Version 1.4 is in closed testing on Google Play."],
 			},
 		],
-		note: "The screenshots use sample entries, never real ones.",
 	},
 	{
 		slug: "coach",
@@ -301,7 +293,7 @@ export const caseStudies: CaseStudy[] = [
 		year: "2026",
 		role: "Designed and built solo · Native Android",
 		stack: ["Kotlin", "Jetpack Compose", "Supabase", "Health Connect", "Claude Haiku"],
-		summary: "An Android app that logs your workouts, runs and Indian food, reads your recovery from your watch, and has an AI coach that only talks about numbers it can prove.",
+		summary: "Workouts, runs and Indian food in one Android app, with an AI coach that reads your recovery.",
 		links: [{ label: "About Coach", href: "/coach" }],
 		shots: [
 			{ src: "/work/coach/today.webp", alt: "Coach's today screen: recovery score, steps and water in one place.", width: 540, height: 960 },
@@ -313,55 +305,51 @@ export const caseStudies: CaseStudy[] = [
 			{
 				heading: "Why I built it",
 				body: [
-					"I built Coach for my own training first: push, pull and legs in the gym, the occasional run, and a watch on my wrist. My workout log logged well but never coached. Food trackers don't know what a katori of dal is. And recovery data sits in a watch app that never talks to the training log.",
-					"Coach puts all of it in one place and reads it together, so it can say what to do next.",
+					"I built Coach for my own training. My workout log never coached, food trackers didn't know a katori of dal, and my recovery data sat in a watch app that talked to neither.",
+					"Coach puts it all in one place and says what to do next.",
 				],
 			},
 			{
 				heading: "What I believe",
 				body: [
-					"Hooked on progress, not on the app. Training is weekly, not daily, and rest days are training too.",
-					"Every number in a coach message is a fact the app computed or you typed. The coach gives options, not orders, and when data is missing it leaves it out and says so.",
-					"Off means off. The AI coach stays off until you turn it on.",
+					"Hooked on progress, not on the app. Rest days are training too.",
+					"Every number the coach says comes from your data. It gives options, not orders.",
 				],
 			},
 			{
 				heading: "What it does",
 				body: [
-					"Workout logging with RPE, supersets, routines and a rest timer, across 885 exercises. You can bring your history over from Hevy.",
-					"GPS runs with splits that are read out as you go, and cards to share them.",
-					"Food logging made for Indian food: about 150 dishes, katori sizes, and the spellings people actually type. Jain diets are understood.",
-					"Recovery from your watch through Health Connect: sleep, heart-rate variability and resting heart rate, combined into one score.",
-					"An AI coach you can talk to. It plans your next session, logs food from a sentence or a photo, and builds programmes.",
+					"Workouts with RPE, supersets, routines and a rest timer, across 885 exercises.",
+					"GPS runs with spoken splits.",
+					"Food logging made for Indian food: about 150 dishes, in katoris and rotis.",
+					"A recovery score from your watch's sleep, HRV and resting heart rate.",
+					"An AI coach that plans your next session, logs food from a photo and builds programmes.",
 				],
 			},
 			{
 				heading: "The details",
 				body: [
-					"The coach screen is a coach's call sheet, not a chat app. The coach has no chat bubble, its charts sit right in the conversation, and a small ticker shows what it's reading while it thinks.",
-					"Focus mode is made for the gym floor: one exercise, one big rest timer and one button.",
-					"Portions are counted the way people eat: in katoris, rotis and plates. A big katori is 360 ml and a small one 155.",
-					"Motion never gets in the way. There are no page transitions, and when you turn on \"remove animations\", there are none at all.",
-					"Every line in the app is a plain sentence with one idea in it.",
-					"I removed a feature that didn't hold up. A daily \"today's call\" was wrong more often than right on real use, so it went.",
+					"The coach screen is a call sheet, not a chat: no bubbles, charts inline, and a ticker showing what it's reading.",
+					"Focus mode for the gym floor: one exercise, one big rest timer, one button.",
+					"No page transitions.",
+					"I cut a daily \"today's call\" because it was wrong more often than right.",
 				],
 			},
 			{
 				heading: "How it's built",
 				body: [
-					"Native Kotlin with Jetpack Compose. It works offline first and syncs to Supabase, with row-level security on every table.",
-					"The coach runs on Claude Haiku. The tool loop runs on the phone: the coach has 24 tools over your own data and at most six model calls per answer, and a small server function only checks who's asking before passing the call on.",
-					"The model never types a number. It writes placeholders that the app fills in from your data, and a reply with a typed number fails the check. I compared models on my own 50-case test set: Sonnet scored a little higher, at about fifteen times the cost, so Haiku runs everything.",
-					"Some questions never reach the model's judgement. Under-18s, pregnancy and medication, signs of an eating disorder and red-flag symptoms are caught by the app and answered with fixed, careful text, including the Tele-MANAS helpline where it fits.",
-					"Over 1,000 unit tests, and every push builds a signed release. AI coding tools helped along the way.",
+					"Native Kotlin and Jetpack Compose, offline first, synced to Supabase.",
+					"The coach runs on Claude Haiku, with 24 tools over your data and the tool loop on the phone.",
+					"The model never types a number. It writes placeholders the app fills in from your data. On my 50-case test set Sonnet scored slightly higher at fifteen times the cost, so Haiku runs everything.",
+					"Pregnancy, under-18s and eating-disorder signals get fixed answers from the app, not the model.",
+					"Over 1,000 unit tests. AI coding tools helped along the way.",
 				],
 			},
 			{
 				heading: "Where it is now",
-				body: ["Coach is in testing, with closed testing on Google Play next. It's for training, not medical advice."],
+				body: ["Closed testing on Google Play is next."],
 			},
 		],
-		note: "The screenshots come from the Play Store listing.",
 	},
 	{
 		slug: "my-people",
@@ -371,7 +359,7 @@ export const caseStudies: CaseStudy[] = [
 		year: "2025",
 		role: "Designed, built and published solo",
 		stack: ["Flutter", "Riverpod", "SQLite", "Gemini · OpenAI · Claude"],
-		summary: "A private journal for the people in your life: the small things about friends, family and colleagues that make a relationship feel seen. It's on Google Play.",
+		summary: "A private journal for the small things about the people in your life.",
 		links: [
 			{ label: "Google Play", href: "https://play.google.com/store/apps/details?id=com.infiniteants.mypeople" },
 			{ label: "Source on GitHub", href: "https://github.com/dubeyanant/my_people" },
@@ -387,44 +375,42 @@ export const caseStudies: CaseStudy[] = [
 			{
 				heading: "Why I built it",
 				body: [
-					"I built My People for myself first, because I kept forgetting the small things about people: a gift idea, what someone doesn't eat, what we talked about last time. Contact apps hold a number and a birthday. The rest lived only in my head.",
+					"I kept forgetting the small things about people: a gift idea, what someone doesn't eat, what we talked about last time.",
 				],
 			},
 			{
 				heading: "What I believe",
 				body: [
-					"Your notes about people are some of the most sensitive data you own. Every decision in the app follows from that.",
-					"Local first: no account, no sync service, and no server that holds your data. No lock-in: everything exports to a single file you own. And nothing hidden: the app lists, in full, everything that leaves the device.",
+					"Your notes about people are some of the most sensitive data you own.",
+					"No account and no server. Everything exports to one file you own.",
 				],
 			},
 			{
 				heading: "What it does",
 				body: [
-					"A profile for each person with notes as a timeline, events, birthdays, interests, dietary needs and how you know them.",
-					"Persona chat: talk to an AI that answers the way that person might, built only from what you've written about them.",
-					"An app lock, backup and restore with optional encryption, and sharing a single profile.",
+					"A profile for each person: notes as a timeline, events, birthdays, interests and diet.",
+					"Persona chat: an AI that answers the way that person might, from your notes.",
 				],
 			},
 			{
 				heading: "The details",
 				body: [
-					"The app changes with the time of day. It has four themes, for morning, afternoon, evening and night, and follows the clock unless you pick one.",
+					"Four themes follow the time of day.",
 					"The main button is a radial menu with a charge ring and haptics that build as you hold it.",
-					"A birthday's year is optional. You often know the day, not the age.",
-					"You can keep anyone out of AI chat with one switch on their profile. Their notes are then never sent to a model.",
-					"The profile form is hard to lose work in, and the update screen always offers a backup before anything else, because the data lives only on your phone.",
+					"A birthday's year is optional.",
+					"One switch keeps a person out of AI chat.",
+					"The update screen offers a backup first.",
 				],
 			},
 			{
 				heading: "How it's built",
 				body: [
-					"Flutter, Riverpod and a local SQLite database. AI chat sits behind one interface with adapters for Gemini, OpenAI and Claude, and runs on your own key. Running a shared key for everyone wasn't sustainable, and this way you choose who sees your notes. The key is kept in the Android Keystore and never goes into backups or logs.",
-					"The persona prompt is built only from your notes, never photos or social handles, and tells the model not to invent details. A guard checks for prompt injection, with a hidden marker that shows if the prompt ever leaks.",
-					"Login was added early on and taken out once the app went local-first. About 115 unit tests. AI coding tools helped with the latest rebuild.",
+					"Flutter, Riverpod and a local SQLite database. Chat works with Gemini, OpenAI or Claude on your own key.",
+					"A guard checks for prompt injection, with a hidden marker that shows if the prompt leaks.",
+					"About 115 unit tests. AI coding tools helped with the latest rebuild.",
 				],
 			},
 		],
-		note: "The people and notes in the screenshots are invented.",
 	},
 ];
 
@@ -445,7 +431,7 @@ export const album: AlbumEntry[] = [
 ];
 
 export const experience = [
-	{ years: "2026 –", role: "Assistant Manager", org: "Sharekhan, Mumbai", detail: "I lead AI integration in the mobile team, including a Claude Code setup that checks changes against our module standard and writes the unit tests. I built the UI inspection tool and the Razorpay Collect and Intent fund-transfer flows." },
+	{ years: "2026 –", role: "Assistant Manager", org: "Sharekhan, Mumbai", detail: "I lead AI integration in the mobile team, and built the UI inspection tool and the Razorpay fund-transfer flows." },
 	{ years: "2024–26", role: "Associate Developer", org: "Sharekhan, Mumbai", detail: "Built one-click F&O, which handles 10% of trade volume. Moved the code to Riverpod, set up Firebase engagement workflows, migrated the app to Flutter Web and WASM, and built the CI/CD pipeline." },
 	{ years: "2024", role: "Intern Developer", org: "Sharekhan, Navi Mumbai", detail: "Helped move the mobile apps from native Android and iOS to Flutter. Handled the UI and UX fixes." },
 	{ years: "2022–24", role: "M.Sc. Computer Science", org: "MIT World Peace University, Pune", detail: "CGPA 8.6." },

@@ -18,7 +18,7 @@ export default function WritingIndex() {
 				<div className="mx-auto max-w-6xl px-5 pt-14 pb-24 sm:px-10 sm:pt-20">
 					<h1 className="font-display text-[clamp(3.5rem,9vw,7rem)] leading-[0.86] font-black uppercase">Writing</h1>
 					<p className="mt-4 max-w-[52ch] text-lg">
-						Posts about Flutter, Android, Git and building small products. My personal writing is in{" "}
+						Personal writing is in{" "}
 						<Link href="/after-hours" className="font-bold text-inland-ink">
 							after hours
 						</Link>
