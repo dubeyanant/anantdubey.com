@@ -1,5 +1,6 @@
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PaperHeader, PostBox } from "@/components/Chrome";
@@ -83,6 +84,24 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
 				</dl>
 
 				{c.slug === "voice-trading-agent" && <VoiceDemo />}
+
+				{/* Screens, mounted like stamps in a strip: a row you swipe on a phone, a row of five on a wide screen. */}
+				{c.shots && (
+					<ul data-reveal aria-label={`${c.title} screenshots`} className="overflow-y-hidden -mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 sm:-mx-10 sm:px-10 lg:mx-0 lg:px-0">
+						{c.shots.map((shot) => (
+							<li key={shot.src} className="w-44 shrink-0 snap-start sm:w-52 lg:w-auto lg:flex-1 lg:max-w-56">
+								<Image
+									src={shot.src}
+									alt={shot.alt}
+									width={shot.width}
+									height={shot.height}
+									sizes="(min-width: 1024px) 14rem, 13rem"
+									className="h-auto w-full rounded-2xl border border-rule"
+								/>
+							</li>
+						))}
+					</ul>
+				)}
 
 				<article className="prose-letter mt-4">
 					{c.sections.map((s) => (

@@ -103,7 +103,7 @@ export default function Home() {
 						<Mask>The work</Mask>
 					</h2>
 					<p data-reveal className="mt-4 max-w-[52ch] text-lg text-ink-soft">
-						Four projects in detail. The rest are in the album below.
+						Six projects in detail. The rest are in the album below.
 					</p>
 					<ol className="mt-12">
 						{caseStudies.map((c) => (
