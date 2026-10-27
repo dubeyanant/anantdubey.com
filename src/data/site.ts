@@ -240,7 +240,7 @@ export const caseStudies: CaseStudy[] = [
 			{
 				heading: "Why I built it",
 				body: [
-					"I built Chitt for myself. The things I wanted to write down came to me in the middle of the day, not at a desk in the evening.",
+					"I built Chitt for myself. I wanted a journal that takes a few words whenever something hits, at any time of day.",
 				],
 			},
 			{
