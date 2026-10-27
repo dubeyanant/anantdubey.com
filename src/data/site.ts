@@ -185,7 +185,10 @@ export const caseStudies: CaseStudy[] = [
 				],
 			},
 		],
-		links: [{ label: "MCP server on GitHub", href: "https://github.com/dubeyanant/paper-broker-mcp" }],
+		links: [
+			{ label: "How it's built", href: "/writing/voice-trading-agent-mcp" },
+			{ label: "MCP server on GitHub", href: "https://github.com/dubeyanant/paper-broker-mcp" },
+		],
 	},
 	{
 		slug: "ui-inspection-tool",
@@ -424,6 +427,9 @@ export type AlbumEntry = {
 };
 
 export const album: AlbumEntry[] = [
+	{ title: "Chitt", kind: "Flutter app", status: "Beta", ink: "plum", blurb: "A private journal for the moments that hit you during the day.", href: "/work/chitt" },
+	{ title: "Coach", kind: "Android app", status: "Beta", ink: "emerald", blurb: "Workouts, runs and Indian food, with an AI coach that reads your recovery.", href: "/work/coach" },
+	{ title: "My People", kind: "Flutter app", status: "On Google Play", ink: "ink", blurb: "A private journal for the small things about the people in your life.", href: "/work/my-people" },
 	{ title: "Paisa", kind: "Web app", status: "Working build", ink: "saffron", blurb: "Personal finance insights, built with Next.js and Supabase." },
 	{ title: "animated_pill", kind: "Flutter package", status: "Published", ink: "ultra", blurb: "An animated pill widget for Flutter apps, published on pub.dev.", href: "https://pub.dev/packages/animated_pill" },
 	{ title: "SEBI Securities Market Hackathon", kind: "Hackathon", status: "2025", ink: "ultra", blurb: "A Next.js MVP for India's bond market, with fractional bonds, incentives and a game that teaches how bonds work. I was the only front-end architect." },

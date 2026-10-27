@@ -8,7 +8,7 @@ import { TransitionLink } from "@/components/Transition";
 import { album, caseStudies, experience, sheet, site, skills } from "@/data/site";
 import { formatDate, list } from "@/lib/content";
 
-const ALBUM_FORMATS = ["lg:col-span-2 lg:row-span-2", "lg:col-span-2", "lg:col-span-2", "lg:col-span-4", "lg:col-span-3", "lg:col-span-3"];
+const ALBUM_FORMATS = ["lg:col-span-2 lg:row-span-2", "lg:col-span-2", "lg:col-span-2", "lg:col-span-2", "lg:col-span-2", "lg:col-span-3", "lg:col-span-3"];
 
 /** A stamp that opens a case study floods the screen with that study's ink on the way there. */
 function coverFor(href: string) {
@@ -19,6 +19,7 @@ function coverFor(href: string) {
 export default function Home() {
 	const [fno, ...singles] = sheet;
 	const posts = list("writing").slice(0, 4);
+	const work = caseStudies.filter((c) => !album.some((a) => a.href === `/work/${c.slug}`));
 
 	// Shown beside the name on desktop, and after the coil of stamps on phones so the work leads.
 	const ctas = (
@@ -95,13 +96,13 @@ export default function Home() {
 			</header>
 
 			<main id="main">
-				{/* Four in detail. */}
+				{/* The work in detail. Anything mounted in the album is left out here. */}
 				<section id="work" className="mx-auto max-w-6xl px-5 pt-20 pb-16 sm:px-10 sm:pt-28">
 					<h2 data-reveal="mask" className="font-display text-[clamp(3rem,7vw,5.5rem)] leading-[0.88] font-black uppercase">
 						<Mask>The work</Mask>
 					</h2>
 					<ol className="mt-12">
-						{caseStudies.map((c) => (
+						{work.map((c) => (
 							<li key={c.slug} data-reveal className="border-t-2 border-ink">
 								<TransitionLink
 									href={`/work/${c.slug}`}
@@ -135,7 +136,7 @@ export default function Home() {
 					</h2>
 						<ul className="mt-12 grid grid-flow-dense gap-7 sm:grid-cols-2 lg:grid-cols-6">
 							{album.map((a, i) => {
-								// Formats vary like a real issue: a tall lead, a wide commemorative, two hackathon halves.
+								// Formats vary like a real issue: a tall lead, four singles, two hackathon halves.
 								const format = ALBUM_FORMATS[i] ?? "lg:col-span-2";
 								const face = (
 									<div className={`flex h-full flex-col gap-3 border-2 border-current p-4 ${inkClass[a.ink]}`}>
