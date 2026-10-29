@@ -171,14 +171,14 @@ export const caseStudies: CaseStudy[] = [
 			{
 				heading: "What happened next",
 				body: [
-					"The agent won Ideathon 2026. In the hackathon after it, I mentored two teams of eight, and both shipped to production.",
+					"The agent won Ideathon 2026. In the hackathon after it, I mentored two teams of eight.",
 				],
 			},
 			{
 				heading: "The public rebuild",
 				body: [
-					"I rebuilt it from scratch in the open, on a paper trading account. Try it above.",
-					"Every order is read back, and nothing is placed until you say yes.",
+					"I rebuilt it from scratch in the open, on a paper trading account.",
+					"It reads every order back and places it when you say yes.",
 					"It summarises this week's headlines for a stock and flags pump-and-dump signs in a forwarded tip.",
 					"It works in Hindi and English.",
 					"The MCP server is open source and works with any MCP client.",
@@ -211,9 +211,9 @@ export const caseStudies: CaseStudy[] = [
 				heading: "What I built",
 				body: [
 					"A Flutter package that runs inside the app. In test builds, a toolbar floats over the real screens.",
-					"Tap a widget to see its distance to each edge, or two to see the gap between them, in the same units as Figma. Text shows its size, weight, font and colours.",
+					"Tap a widget to see its distance to each edge. Tap two to see the gap between them, in Figma's units. Text shows its size, weight, font and colours.",
 					"Tapping text checks its contrast against WCAG 2.1 AA, using the rendered pixels as the background.",
-					"It takes annotated screenshots for bug reports, and in debug builds shows the file and line behind each widget.",
+					"It takes annotated screenshots for bug reports. In debug builds it shows the file and line behind each widget.",
 				],
 			},
 			{
@@ -243,14 +243,14 @@ export const caseStudies: CaseStudy[] = [
 			{
 				heading: "Why I built it",
 				body: [
-					"I built Chitt for myself. I wanted a journal that takes a few words whenever something hits, at any time of day.",
+					"I wanted a journal that takes a few words whenever something hits, at any time of day.",
 				],
 			},
 			{
 				heading: "What I believe",
 				body: [
 					"You write when something hits you, in a few words, and get on with your day. No streaks, no scores.",
-					"चित्त is Sanskrit for consciousness. A chit is a slip of paper you scribble on and keep. Everything you write stays on your phone.",
+					"चित्त is Sanskrit for consciousness. A chit is a slip of paper you scribble on and keep.",
 				],
 			},
 			{
@@ -268,7 +268,7 @@ export const caseStudies: CaseStudy[] = [
 					"It asks for no permissions until after your first save.",
 					"The time on a chit is set when you save and never changes.",
 					"Voice notes are never transcribed.",
-					"It's dark because most journaling happens at night, and it feels like paper: thin rules instead of cards, and one red accent.",
+					"It's dark because most journaling happens at night. Thin rules and one red accent make it feel like paper.",
 					"Hindi and English share one baseline. I wrote the Hindi and Marathi copy myself.",
 					"A delete button is never the bright one.",
 				],
@@ -277,9 +277,8 @@ export const caseStudies: CaseStudy[] = [
 				heading: "How it's built",
 				body: [
 					"Flutter, Riverpod and a local SQLite database.",
-					"What you write never leaves the phone. Analytics only accept counts, and a test fails if text gets in.",
+					"What you write never leaves the phone. Analytics only accept counts. A test fails if text gets in.",
 					"Over 1,400 unit tests and about 200 written design decisions. With 2,000 chits it opens in under a second.",
-					"AI coding tools helped along the way.",
 				],
 			},
 			{
@@ -308,15 +307,15 @@ export const caseStudies: CaseStudy[] = [
 			{
 				heading: "Why I built it",
 				body: [
-					"I built Coach for my own training. My workout log never coached, food trackers didn't know a katori of dal, and my recovery data sat in a watch app that talked to neither.",
+					"My workout log never coached, food trackers didn't know a katori of dal, and my recovery data sat in a watch app that talked to neither.",
 					"Coach puts it all in one place and says what to do next.",
 				],
 			},
 			{
 				heading: "What I believe",
 				body: [
-					"Hooked on progress, not on the app. Rest days are training too.",
-					"Every number the coach says comes from your data. It gives options, not orders.",
+					"Rest days are training too.",
+					"Every number the coach says comes from your data. It gives options.",
 				],
 			},
 			{
@@ -332,7 +331,7 @@ export const caseStudies: CaseStudy[] = [
 			{
 				heading: "The details",
 				body: [
-					"The coach screen is a call sheet, not a chat: no bubbles, charts inline, and a ticker showing what it's reading.",
+					"The coach screen reads like a call sheet: no bubbles, charts inline and a ticker showing what it's reading.",
 					"Focus mode for the gym floor: one exercise, one big rest timer, one button.",
 					"No page transitions.",
 					"I cut a daily \"today's call\" because it was wrong more often than right.",
@@ -344,8 +343,8 @@ export const caseStudies: CaseStudy[] = [
 					"Native Kotlin and Jetpack Compose, offline first, synced to Supabase.",
 					"The coach runs on Claude Haiku, with 24 tools over your data and the tool loop on the phone.",
 					"The model never types a number. It writes placeholders the app fills in from your data. On my 50-case test set Sonnet scored slightly higher at fifteen times the cost, so Haiku runs everything.",
-					"Pregnancy, under-18s and eating-disorder signals get fixed answers from the app, not the model.",
-					"Over 1,000 unit tests. AI coding tools helped along the way.",
+					"The app gives fixed answers to pregnancy, under-18 and eating-disorder signals.",
+					"Over 1,000 unit tests.",
 				],
 			},
 			{
@@ -369,10 +368,10 @@ export const caseStudies: CaseStudy[] = [
 		],
 		shots: [
 			{ src: "/work/my-people/people.webp", alt: "My People's home screen: a grid of six people with their photos.", width: 540, height: 1200 },
-			{ src: "/work/my-people/profile.webp", alt: "A profile at night: birthday, work, relationship, interests and diet, with an upcoming housewarming dinner.", width: 540, height: 1200 },
+			{ src: "/work/my-people/profile.webp", alt: "A profile in the afternoon theme: birthday, work, relationship, interests and diet, with an upcoming housewarming dinner.", width: 540, height: 1200 },
 			{ src: "/work/my-people/notes.webp", alt: "The same person's notes as a timeline, from the first meeting in college to a gift idea for her new flat.", width: 540, height: 1200 },
 			{ src: "/work/my-people/privacy.webp", alt: "The What leaves your device screen: chat is off without a key, and everything else stays on the phone.", width: 540, height: 1200 },
-			{ src: "/work/my-people/morning.webp", alt: "The same profile in the light morning theme.", width: 540, height: 1200 },
+			{ src: "/work/my-people/evening.webp", alt: "The same profile in the evening theme.", width: 540, height: 1200 },
 		],
 		sections: [
 			{
@@ -410,7 +409,7 @@ export const caseStudies: CaseStudy[] = [
 				body: [
 					"Flutter, Riverpod and a local SQLite database. Chat works with Gemini, OpenAI or Claude on your own key.",
 					"A guard checks for prompt injection, with a hidden marker that shows if the prompt leaks.",
-					"About 115 unit tests. AI coding tools helped with the latest rebuild.",
+					"About 115 unit tests.",
 				],
 			},
 		],
