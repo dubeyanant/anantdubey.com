@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coach admin</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0b0b0d">
+<link rel="icon" type="image/svg+xml" href="/coach/icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400..800&display=swap">
+<link rel="stylesheet" href="/coach/style.css">
+<link rel="stylesheet" href="/coach/admin.css">
+</head>
+<body>
+<div class="wrap wide">
+<header class="top"><a class="mark" href="/coach"><svg viewBox="24 24 60 60" aria-hidden="true"><path d="M68.14,37.15 A22,22 0 1,0 68.14,70.85" fill="none" stroke="#C8F031" stroke-width="13" stroke-linecap="round"/><circle cx="76" cy="54" r="6.5" fill="#FF6B2C"/></svg>COACH ADMIN</a><nav class="links"><span id="who"></span><button id="refresh" class="link" hidden>Refresh</button><button id="signout" class="link" hidden>Sign out</button></nav></header>
+
+<main id="signin" hidden>
+<h1>Sign in</h1>
+<p class="lede">With your Coach account's email and password.</p>
+<form id="signin-form" class="card form">
+<label>Email<input id="email" type="email" autocomplete="username" required></label>
+<label>Password<input id="password" type="password" autocomplete="current-password" required></label>
+<button class="pill" type="submit">Sign in</button>
+<p id="signin-error" class="error" role="alert"></p>
+</form>
+</main>
+
+<main id="board" hidden>
+<p id="board-error" class="error" role="alert"></p>
+<p id="generated" class="dated"></p>
+
+<section aria-labelledby="money-h">
+<h2 id="money-h">Money, last 28 days</h2>
+<div id="hero" class="hero"></div>
+<div id="tiles" class="tiles"></div>
+<p id="revenue-note" class="dated"></p>
+</section>
+
+<section aria-labelledby="spend-h">
+<h2 id="spend-h">AI spend a day</h2>
+<p class="dated">The last 60 days, in US dollars, from coach_usage.</p>
+<div id="spend-chart" class="chart card"></div>
+<details class="table-view"><summary>As a table</summary><div id="spend-table"></div></details>
+<div id="models" class="tiles"></div>
+</section>
+
+<section aria-labelledby="people-h">
+<h2 id="people-h">People</h2>
+<div id="counts" class="tiles"></div>
+</section>
+
+<section aria-labelledby="users-h">
+<h2 id="users-h">Users</h2>
+<input id="search" type="search" placeholder="Search email or username" aria-label="Search users">
+<div class="scroll"><table id="users" class="users"><thead><tr><th>User</th><th>State</th><th class="num">Messages</th><th class="num">AI cost</th><th>Last active</th><th></th></tr></thead><tbody></tbody></table></div>
+<p class="dated">Messages and cost are this month, in UTC.</p>
+</section>
+
+<section aria-labelledby="switch-h">
+<h2 id="switch-h">Switches</h2>
+<form id="config" class="card form grid2"></form>
+<p id="config-note" class="dated"></p>
+</section>
+</main>
+
+<div id="tip" class="tip" role="status" hidden></div>
+</div>
+<script src="/coach/admin.js"></script>
+</body>
+</html>

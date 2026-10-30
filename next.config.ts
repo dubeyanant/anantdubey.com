@@ -29,6 +29,10 @@ const nextConfig: NextConfig = {
 			{ source: "/coach/privacy", destination: "/coach/privacy.html" },
 			{ source: "/coach/terms", destination: "/coach/terms.html" },
 			{ source: "/coach/delete-account", destination: "/coach/delete-account.html" },
+			// The owner's dashboard, unlinked and kept out of search (noindex, robots).
+			{ source: "/coach/admin", destination: "/coach/admin.html" },
+			// Coach's Supabase, passed through for the dashboard: some Indian networks can't look up supabase.co.
+			{ source: "/coach/supabase/:path*", destination: "https://ymvksencarmukmngwppk.supabase.co/:path*" },
 		];
 	},
 };
