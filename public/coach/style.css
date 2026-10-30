@@ -74,3 +74,9 @@ li { margin-bottom: 6px; }
 
 footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--mist); font-size: 14px; display: flex; flex-wrap: wrap; gap: 8px 20px; }
 footer a { color: var(--mist); }
+
+/* The beta's steps: numbered, with a little air between them. */
+ol.steps { padding-left: 24px; }
+ol.steps li { margin-bottom: 18px; padding-left: 4px; overflow-wrap: anywhere; }
+ol.steps .pill { margin-top: 10px; }
+#beta { scroll-margin-top: 24px; }
